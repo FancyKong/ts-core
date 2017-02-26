@@ -23,6 +23,11 @@
 	</properties>
 
 	<dependencies>
+		<!--logging-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+		</dependency>
 		<!--common-->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -41,7 +46,7 @@
 			<artifactId>commons-collections</artifactId>
 		</dependency>
 
-		<!-- log -->
+		<!--&lt;!&ndash; log &ndash;&gt;
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -50,17 +55,17 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 		</dependency>
-		<!-- 代码直接调用log4j会被桥接到slf4j -->
+		&lt;!&ndash; 代码直接调用log4j会被桥接到slf4j &ndash;&gt;
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
 		</dependency>
-		<!-- 代码直接调用common-logging会被桥接到slf4j -->
+		&lt;!&ndash; 代码直接调用common-logging会被桥接到slf4j &ndash;&gt;
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
-		<!-- 代码直接调用java.util.logging会被桥接到slf4j -->
+		&lt;!&ndash; 代码直接调用java.util.logging会被桥接到slf4j &ndash;&gt;
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jul-to-slf4j</artifactId>
@@ -72,7 +77,7 @@
 		<dependency>
 			<groupId>com.googlecode.log4jdbc</groupId>
 			<artifactId>log4jdbc</artifactId>
-		</dependency>
+		</dependency>-->
 
 		<!--serial-->
 		<dependency>
