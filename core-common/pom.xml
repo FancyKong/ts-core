@@ -49,39 +49,10 @@
 			<artifactId>commons-collections</artifactId>
 		</dependency>
 
-		<!-- log -->
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-		</dependency>
-		<!-- 代码直接调用log4j会被桥接到slf4j -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>log4j-over-slf4j</artifactId>
-		</dependency>
-		<!-- 代码直接调用common-logging会被桥接到slf4j -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-		</dependency>
-		<!-- 代码直接调用java.util.logging会被桥接到slf4j -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jul-to-slf4j</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.log4jdbc</groupId>
-			<artifactId>log4jdbc</artifactId>
-		</dependency>
-
 		<!--serial-->
 		<dependency>
 			<groupId>io.protostuff</groupId>

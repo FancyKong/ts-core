@@ -4,22 +4,22 @@
 
     <conversionRule conversionWord="traceLogId" converterClass="com.jdkcc.ts.common.util.TraceLogIdConverter"/>
 
-    <logger name="org.springframework.web" level="INFO"/>
-    <logger name="com.jdkcc.ts" level="TRACE" />
+    <!--<logger name="org.springframework.web" level="INFO"/>
+    <logger name="com.jdkcc.ts" level="TRACE" />-->
 
     <springProfile name="dev">
-        <logger name="com.jdkcc.ts" level="DEBUG" />
+        <!--<logger name="com.jdkcc.ts" level="DEBUG" />
         <logger name="org.hibernate" level="DEBUG" />
-        <logger name="org.springframework.web" level="DEBUG"/>
+        <logger name="org.springframework.web" level="DEBUG"/>-->
 
         <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>%cyan(%date{HH:mm:ss.SSS}) %magenta([%traceLogId]) %highlight(%-5level) %blue([%file : %line]) %boldGreen(%msg%n)</pattern>
             </encoder>
-            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-                <level>TRACE</level>
-            </filter>
         </appender>
+        <root level="INFO">
+            <appender-ref ref="consoleAppender" />
+        </root>
     </springProfile>
 
     <springProfile name="prod">
@@ -38,6 +38,9 @@
                 <pattern>%date{HH:mm:ss.SSS} [%thread] [%traceLogId] %-5level %logger{36} [%file : %line] - %msg%n</pattern>
             </encoder>
         </appender>
+        <root level="WARN">
+            <appender-ref ref="rollingFile" />
+        </root>
     </springProfile>
 
 

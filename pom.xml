@@ -35,8 +35,6 @@
         <jackson.version>2.8.1</jackson.version>
         <fastjson.version>1.2.15</fastjson.version>
         <guava.version>19.0</guava.version>
-        <slf4j.version>1.7.21</slf4j.version>
-        <logback.version>1.1.7</logback.version>
         <poi.version>3.14</poi.version>
         <lombok.version>1.16.6</lombok.version>
         <org.hibernate.version>5.0.1.Final</org.hibernate.version>
@@ -114,29 +112,6 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
-            <dependency>
-                <groupId>net.sf.dozer</groupId>
-                <artifactId>dozer</artifactId>
-                <version>${dozer.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>commons-collections</artifactId>
-                        <groupId>commons-collections</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>commons-lang3</artifactId>
-                        <groupId>org.apache.commons</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>slf4j-api</artifactId>
-                        <groupId>org.slf4j</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>jcl-over-slf4j</artifactId>
-                        <groupId>org.slf4j</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
 
             <!-- json -->
             <dependency>
@@ -165,53 +140,6 @@
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
-
-            <!-- LOGGING begin -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback.version}</version>
-            </dependency>
-            <!-- 代码直接调用log4j会被桥接到slf4j -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>log4j-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <!-- 代码直接调用common-logging会被桥接到slf4j -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <!-- 代码直接调用java.util.logging会被桥接到slf4j -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jul-to-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.codehaus.jackson</groupId>
-                <artifactId>jackson-mapper-asl</artifactId>
-                <version>1.9.13</version>
-            </dependency>
-            <dependency>
-                <groupId>com.googlecode.log4jdbc</groupId>
-                <artifactId>log4jdbc</artifactId>
-                <version>1.2</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>slf4j-api</artifactId>
-                        <groupId>org.slf4j</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <!-- LOGGING end -->
 
             <!--zookeeper-->
             <dependency>
@@ -327,8 +255,8 @@
             <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-redis -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-redis</artifactId>
-                <version>1.4.4.RELEASE</version>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${boot.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -341,7 +269,17 @@
                 <version>${boot.version}</version>
                 <optional>false</optional>
             </dependency>
-
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <version>${boot.version}</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-logging</artifactId>
+                <version>${boot.version}</version>
+            </dependency>
 
             <!--Dal-->
             <dependency>
