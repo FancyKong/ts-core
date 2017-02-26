@@ -1,7 +1,7 @@
-package com.jdkcc.ts.common.weixinjs;
+package com.jdkcc.ts.service.wechat.weixinjs;
 
 
-import com.jdkcc.ts.common.weixin4j.WeixinConfig;
+import com.jdkcc.ts.service.wechat.weixin4j.WeixinConfig;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

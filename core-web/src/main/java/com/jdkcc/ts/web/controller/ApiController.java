@@ -1,7 +1,7 @@
 package com.jdkcc.ts.web.controller;
 
-import com.jdkcc.ts.common.weixin4j.WeixinConfig;
-import com.jdkcc.ts.common.weixinjs.Sign;
+import com.jdkcc.ts.service.wechat.weixin4j.WeixinConfig;
+import com.jdkcc.ts.service.wechat.weixinjs.Sign;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;

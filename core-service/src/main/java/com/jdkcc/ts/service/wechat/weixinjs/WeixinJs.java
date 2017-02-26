@@ -1,9 +1,11 @@
-package com.jdkcc.ts.common.weixinjs;
+package com.jdkcc.ts.service.wechat.weixinjs;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.jdkcc.ts.common.weixin4j.WeixinConfig;
+import com.google.common.base.Throwables;
+import com.jdkcc.ts.service.wechat.weixin4j.WeixinConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -14,7 +16,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
-
+@Slf4j
 public class WeixinJs {
 	
 	public static String getAccess_token() {
@@ -36,7 +38,7 @@ public class WeixinJs {
 				// 获取token失败
 			}
 		}
-		return access_token;
+		return access_token;//
 	}
 
 
@@ -56,13 +58,13 @@ public class WeixinJs {
 				ticket = jsonObject.getString("ticket");
 			} catch (JSONException e) {
 				// 获取token失败
+				log.error("获取token失败", Throwables.getStackTraceAsString(e));
 			}
 		}
 		return ticket;
 	}
 
 	private static JSONObject httpsRequestGet(String requestUrl) {
-		// TODO Auto-generated method stub
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		HttpGet httpGet = new HttpGet(requestUrl);
 		CloseableHttpResponse response;
@@ -71,15 +73,8 @@ public class WeixinJs {
 			HttpEntity entity = response.getEntity();
 			String result = EntityUtils.toString(entity);
 			return JSON.parseObject(result);
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (IOException | JSONException e) {
+			log.error("httpsRequestGet失败", Throwables.getStackTraceAsString(e));
 		}
 		return null;
 	}
