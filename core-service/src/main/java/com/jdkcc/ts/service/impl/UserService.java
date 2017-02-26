@@ -4,7 +4,7 @@
  */
 package com.jdkcc.ts.service.impl;
 
-import com.jdkcc.ts.dal.entities.JUser;
+import com.jdkcc.ts.dal.entity.JUser;
 import com.jdkcc.ts.dal.mapper.JUserMapper;
 import com.jdkcc.ts.service.api.UserFacade;
 import com.jdkcc.ts.service.dto.request.UserCreateReqDto;

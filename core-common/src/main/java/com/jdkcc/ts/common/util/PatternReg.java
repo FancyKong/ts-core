@@ -2,7 +2,7 @@
  * Bestpay.com.cn Inc.
  * Copyright (c) 2011-2016 All Rights Reserved.
  */
-package com.jdkcc.ts.common.utils;
+package com.jdkcc.ts.common.util;
 
 /**
  * @author Jiangjiaze

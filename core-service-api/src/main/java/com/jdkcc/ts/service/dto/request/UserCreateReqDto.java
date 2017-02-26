@@ -4,7 +4,7 @@
  */
 package com.jdkcc.ts.service.dto.request;
 
-import com.jdkcc.ts.common.utils.PatternReg;
+import com.jdkcc.ts.common.util.PatternReg;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 

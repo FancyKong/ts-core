@@ -2,7 +2,7 @@
  * Bestpay.com.cn Inc.
  * Copyright (c) 2011-2016 All Rights Reserved.
  */
-package com.jdkcc.ts.dal.entities;
+package com.jdkcc.ts.dal.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

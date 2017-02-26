@@ -4,7 +4,7 @@
  */
 package com.jdkcc.ts.service.component.redis;
 
-import com.jdkcc.ts.common.utils.ProtoSerializer;
+import com.jdkcc.ts.common.util.ProtoSerializer;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.redis.serializer.RedisSerializer;

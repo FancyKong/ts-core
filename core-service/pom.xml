@@ -32,6 +32,11 @@
             <groupId>com.jdkcc</groupId>
             <artifactId>core-dal</artifactId>
         </dependency>
+		<dependency>
+			<groupId>com.jdkcc</groupId>
+			<artifactId>core-service-api</artifactId>
+		</dependency>
+
         <!--Spring boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -59,15 +64,6 @@
 				</exclusion>
 			</exclusions>
         </dependency>
-		<!--本地依赖-->
-		<dependency>
-			<groupId>com.jdkcc</groupId>
-			<artifactId>core-dal</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.jdkcc</groupId>
-			<artifactId>core-service-api</artifactId>
-		</dependency>
 
 		<!--kafka-->
 		<dependency>

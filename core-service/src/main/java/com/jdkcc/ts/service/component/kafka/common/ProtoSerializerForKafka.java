@@ -4,7 +4,7 @@
  */
 package com.jdkcc.ts.service.component.kafka.common;
 
-import com.jdkcc.ts.common.utils.ProtoSerializer;
+import com.jdkcc.ts.common.util.ProtoSerializer;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serializer;
 

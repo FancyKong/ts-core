@@ -4,7 +4,7 @@
  */
 package com.jdkcc.ts.service.component.kafka.manager;
 
-import com.jdkcc.ts.dal.entities.JUser;
+import com.jdkcc.ts.dal.entity.JUser;
 import com.jdkcc.ts.service.component.kafka.common.BussinessProcess;
 import com.jdkcc.ts.service.component.kafka.common.GroupName;
 import com.jdkcc.ts.service.component.kafka.common.Topic;
@@ -18,7 +18,6 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
