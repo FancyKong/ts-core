@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import java.util.ArrayList;
@@ -17,10 +18,10 @@ import java.util.List;
 
 /**
  * @author Jiangjiaze
- * @version Id: Beans.java, v 0.1 2017/2/25 21:40 FancyKong Exp $$
+ * @version Id: SpringBootContext.java, v 0.1 2017/2/25 21:40 FancyKong Exp $$
  */
 @Configuration
-public class SpringBootContext {
+public class SpringBootContext extends WebMvcConfigurerAdapter {
 
     @Bean
     public LocalValidatorFactoryBean localValidatorFactoryBean(){

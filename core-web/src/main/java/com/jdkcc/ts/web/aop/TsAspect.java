@@ -6,8 +6,8 @@ package com.jdkcc.ts.web.aop;
 
 import com.google.common.base.Throwables;
 import com.jdkcc.ts.common.enums.ErrorCode;
-import com.jdkcc.ts.common.exceptions.ServiceException;
-import com.jdkcc.ts.common.utils.TraceLogIdConverter;
+import com.jdkcc.ts.common.exception.ServiceException;
+import com.jdkcc.ts.common.util.TraceLogIdConverter;
 import com.jdkcc.ts.service.dto.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

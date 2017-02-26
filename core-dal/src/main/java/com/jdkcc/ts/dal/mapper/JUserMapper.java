@@ -4,7 +4,7 @@
  */
 package com.jdkcc.ts.dal.mapper;
 
-import com.jdkcc.ts.dal.entities.JUser;
+import com.jdkcc.ts.dal.entity.JUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

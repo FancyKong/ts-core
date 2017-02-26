@@ -2,7 +2,7 @@
  * Bestpay.com.cn Inc.
  * Copyright (c) 2011-2016 All Rights Reserved.
  */
-package com.jdkcc.ts.common;
+package com.jdkcc.ts.common.exception;
 
 import com.jdkcc.ts.common.enums.ErrorCode;
 import lombok.Getter;

@@ -4,10 +4,9 @@
  */
 package com.jdkcc.ts.service.component.kafka.process;
 
-import com.jdkcc.ts.dal.entities.JUser;
+import com.jdkcc.ts.dal.entity.JUser;
 import com.jdkcc.ts.service.component.kafka.common.BussinessProcess;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Jiangjiaze

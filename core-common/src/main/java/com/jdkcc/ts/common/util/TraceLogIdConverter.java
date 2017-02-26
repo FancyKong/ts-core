@@ -2,7 +2,7 @@
  * Bestpay.com.cn Inc.
  * Copyright (c) 2011-2016 All Rights Reserved.
  */
-package com.jdkcc.ts.common.utils;
+package com.jdkcc.ts.common.util;
 
 import ch.qos.logback.classic.pattern.ClassicConverter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
