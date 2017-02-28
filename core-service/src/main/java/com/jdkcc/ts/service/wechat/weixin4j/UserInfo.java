@@ -13,7 +13,11 @@ public class UserInfo {
 
 	private Integer sex;
 
+	private String province;
+
 	private String city;
+
+	private String country;
 
 	private String headimgurl;
 
