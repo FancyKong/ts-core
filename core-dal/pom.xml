@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>core-dal</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>core-dal</name>
@@ -13,7 +13,7 @@
 	<parent>
 		<artifactId>ts-core</artifactId>
 		<groupId>com.jdkcc</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2</version>
 	</parent>
 
 	<properties>
