@@ -4,6 +4,7 @@
  */
 package com.jdkcc.ts.web.controller;
 
+import com.jdkcc.ts.common.enums.Gender;
 import com.jdkcc.ts.service.api.UserFacade;
 import com.jdkcc.ts.service.dto.request.UserCreateReqDto;
 import com.jdkcc.ts.service.dto.response.Response;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Date;
 
 /**
  * @author Jiangjiaze

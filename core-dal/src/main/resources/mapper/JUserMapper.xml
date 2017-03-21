@@ -32,10 +32,10 @@
         VALUES (
         #{openid,jdbcType=VARCHAR},
         #{nickname,jdbcType=VARCHAR},
+        #{gender,jdbcType=VARCHAR},
         #{city,jdbcType=VARCHAR},
         #{subscribeTime,jdbcType=TIMESTAMP},
-        #{headimgurl,jdbcType=VARCHAR},
-        #{gender,jdbcType=VARCHAR})
+        #{headimgurl,jdbcType=VARCHAR})
     </insert>
 
     <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">

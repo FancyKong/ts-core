@@ -6,7 +6,7 @@
         <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>%cyan(%date{HH:mm:ss.SSS}) %magenta([%traceLogId]) %highlight(%-5level) %blue([%file : %line])
-                    %boldGreen(%msg%n)
+                    %green(%msg%n)
                 </pattern>
             </encoder>
         </appender>

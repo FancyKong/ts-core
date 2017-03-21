@@ -75,8 +75,32 @@ public class SwaggerConfig {
                 .apiInfo(demoApiInfo());
     }
 
+    @Bean
+    public Docket userApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("user")
+                .genericModelSubstitutes(DeferredResult.class)
+//              .genericModelSubstitutes(ResponseEntity.class)
+                .useDefaultResponseMessages(false)
+                .forCodeGeneration(false)
+                .pathMapping("/")
+                .select()
+                .paths(or(regex("/user/.*")))//过滤的接口
+                .build()
+                .apiInfo(userApiInfo());
+    }
+
+    private ApiInfo userApiInfo() {
+        return new ApiInfo("USER Controller API",
+                "",
+                "VERSION",
+                "",
+                new Contact("FancyKong","www.fancykong.com","823382133@qq.com"),
+                "","");
+    }
+
     private ApiInfo testApiInfo() {
-        ApiInfo apiInfo = new ApiInfo("大标题就大标题咯TEST   test",//大标题
+        ApiInfo apiInfo = new ApiInfo("大标题",//大标题
                 "小标题   描述  详细描述 description",//小标题
                 "0.1",//版本
                 "terms of service Url",
