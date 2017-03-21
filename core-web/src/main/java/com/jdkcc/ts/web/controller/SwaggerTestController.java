@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
+ * SwaggerConfig 例子
  * Created by Cherish on 2017/1/4.
  */
 @Slf4j
 @Controller
-@RequestMapping("/test")//SwaggerConfig 例子
+@RequestMapping("/test")
 public class SwaggerTestController {
 
     @ResponseBody

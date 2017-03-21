@@ -23,27 +23,11 @@ public class SwaggerConfig {
     /*
     * 访问地址
     * http://127.0.0.1:8080/swagger-ui.html
-    * */
-
-    /**
-     * SpringBoot默认已经将classpath:/META-INF/resources/和classpath:/META-INF/resources/webjars/映射
-     * 所以该方法不需要重写，如果在SpringMVC中，可能需要重写定义（我没有尝试）
-     * 重写该方法需要 extends WebMvcConfigurerAdapter
-     *
-     */
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("swagger-ui.html")
-//                .addResourceLocations("classpath:/META-INF/resources/");
-//
-//        registry.addResourceHandler("/webjars/**")
-//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-//    }
+    */
 
     /**
      * 可以定义多个组，比如本类中定义把test和demo区分开了
      * （访问页面就可以看到效果了）
-     *
      */
     @Bean
     public Docket testApi() {
