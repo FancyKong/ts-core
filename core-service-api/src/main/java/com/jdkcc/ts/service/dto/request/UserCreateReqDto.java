@@ -7,6 +7,7 @@ package com.jdkcc.ts.service.dto.request;
 import com.jdkcc.ts.common.util.PatternReg;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Pattern;
 import java.util.Date;
@@ -17,10 +18,7 @@ import java.util.Date;
  */
 @Data
 public class UserCreateReqDto {
-    /**
-     * 用户id
-     */
-    private long id;
+
     /**
      * 微信openid
      */
@@ -37,7 +35,8 @@ public class UserCreateReqDto {
     /**
      * 关注时间
      */
-    private Date subscribe_time;
+    @DateTimeFormat(pattern="yyyy-MM-dd",iso = DateTimeFormat.ISO.DATE)
+    private Date subscribeTime;
     /**
      * 头像url
      */

@@ -4,6 +4,7 @@
  */
 package com.jdkcc.ts.service.impl;
 
+import com.jdkcc.ts.common.enums.Gender;
 import com.jdkcc.ts.dal.entity.JUser;
 import com.jdkcc.ts.dal.mapper.JUserMapper;
 import com.jdkcc.ts.service.api.UserFacade;
@@ -35,6 +36,8 @@ public class UserService implements UserFacade {
         user.setNickname(reqDto.getNickname());
         user.setOpenid(reqDto.getOpenid());
         user.setSubscribeTime(new Date());
+        userMapper.insert(user);
+        user.setGender(Gender.M.getCode());
         return userMapper.insert(user) > 0;
     }
 
