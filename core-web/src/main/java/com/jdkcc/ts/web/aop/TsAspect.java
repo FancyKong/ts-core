@@ -27,7 +27,7 @@ import java.util.Set;
 
 /**
  * @author Jiangjiaze
- * @version Id: Aspert.java, v 0.1 2016/9/27 0027 下午 4:22 FancyKong Exp $$
+ * @version Id: TsAspect.java, v 0.1 2016/9/27 0027 下午 4:22 FancyKong Exp $$
  *          对Controllers 做统一日志打印，请求参数验证， 统一事务外异常处理
  */
 @Slf4j

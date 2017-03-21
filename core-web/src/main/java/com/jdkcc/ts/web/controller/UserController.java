@@ -1,10 +1,9 @@
 /**
- * Bestpay.com.cn Inc.
+ * JDKCC.com.cn Inc.
  * Copyright (c) 2011-2016 All Rights Reserved.
  */
 package com.jdkcc.ts.web.controller;
 
-import com.jdkcc.ts.common.enums.Gender;
 import com.jdkcc.ts.service.api.UserFacade;
 import com.jdkcc.ts.service.dto.request.UserCreateReqDto;
 import com.jdkcc.ts.service.dto.response.Response;
@@ -13,9 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.Date;
 
 /**
  * @author Jiangjiaze
@@ -27,22 +25,36 @@ public class UserController {
 
 
     @Autowired
-    UserFacade userService;
+    private UserFacade userService;
 
-    @RequestMapping("{id}/info")
+    /**
+     * 获得指定id 用户的信息
+     * @param id 用户id
+     * @return 用户信息返回DTO
+     */
+    @RequestMapping(value = "{id}/info",method = RequestMethod.GET)
     @ResponseBody
     public Response<UserInfoResDto> getUserInfo(@PathVariable("id") long id) {
         Response<UserInfoResDto> response = new Response<>(true, userService.getUserInfo(id));
         return response;
     }
 
-    @RequestMapping("register")
+    /**
+     * 注册
+     * @param reqDto UserCreateReqDto
+     * @return Boolean
+     */
+    @RequestMapping(value = "register",method = RequestMethod.POST)
     @ResponseBody
     public Response<Boolean> register(UserCreateReqDto reqDto) {
         return new Response<>(true, userService.register(reqDto));
     }
 
-    @RequestMapping("helloGG")
+    /**
+     * 测试HelloWorld
+     * @return "hello"
+     */
+    @RequestMapping(value = "hello",method = RequestMethod.GET)
     @ResponseBody
     public Response<String> hello() {
         return new Response<>(true,"hello");
