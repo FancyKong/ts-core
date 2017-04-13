@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jdkcc.ts.dal.mapper.JUserMapper">
+    <resultMap id="BaseResultMap" type="com.jdkcc.ts.dal.entity.Permission">
+        <id     column="ID"             property="id"               jdbcType="BIGINT"/>
+        <result column="PERMIT"           property="permit"             jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION"    property="description"      jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID,
+        PERMIT,
+        DESCRIPTION,
+    </sql>
+
+    <insert id="insert" parameterType="com.jdkcc.ts.dal.entity.Permission">
+        INSERT INTO T_PERMISSION (
+        <include refid="Base_Column_List"/>
+        )
+        VALUES (
+        0,
+        #{permit,jdbcType=VARCHAR},
+        #{description,jdbcType=VARCHAR}
+    </insert>
+
+    <update id="update" parameterType="com.jdkcc.ts.dal.entity.Permission">
+        INSERT INTO T_PERMISSION (
+        <include refid="Base_Column_List"/>
+        )
+        VALUES (
+        #{id,jdbcType=BIGINT},
+        #{permit,jdbcType=VARCHAR},
+        #{description,jdbcType=VARCHAR}
+        WHERE
+        ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM T_PERMISSION WHERE ID = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="count" resultMap="java.lang.Long" parameterType="java.lang.Long">
+        SELECT count(*) FROM T_PERMISSION
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE  FROM T_PERMISSION WHERE ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <select id="findAll" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM T_PERMISSION
+        WHERE ID = #{id,jdbcType=BIGINT}
+        limit #{0,jdbcType=INTEGER},#{1,jdbcType=INTEGER}
+        ORDER BY ID
+    </select>
+
+    <select id="findByPermit" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM T_PERMISSION WHERE PERMIT = #{permit,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM T_PERMISSION AS p
+        INNER JOIN T_ROLE_PERMISSION AS rp
+        WHERE p.ID = p.PERMISSION_ID AND p.ROLE_ID = #{0,jdbcType=BIGINT}
+    </select>
+
+</mapper>

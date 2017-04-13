@@ -32,10 +32,10 @@ public class SwaggerDemoController {
      */
     @ResponseBody
     @RequestMapping(value = "/getcount", method = RequestMethod.POST)
-    @ApiOperation(value="测试-getCount", notes="getCount更多说明")
+    @ApiOperation(value="测试-count", notes="getCount更多说明")
     public ModelMap getCount(HttpServletRequest request,
                              HttpServletResponse response) {
-        log.info(">>>>>>>> begin getCount >>>>>>>>");
+        log.info(">>>>>>>> begin count >>>>>>>>");
         ModelMap map = new ModelMap();
         map.addAttribute("count", 158);
 

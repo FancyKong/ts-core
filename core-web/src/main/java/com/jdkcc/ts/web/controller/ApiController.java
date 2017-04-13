@@ -70,7 +70,7 @@ public class ApiController {
 					weixinUser.setSubscribeTime(new Date());
 				}
 				log.info("openid:{} 保存weixinUser到数据库", oAuthInfo.getOpenid());
-				weixinUser = weixinUserService.save(weixinUser);
+				weixinUser = weixinUserService.insert(weixinUser);
 			}
 
 			SessionUtil.addWeixinUser(weixinUser);
