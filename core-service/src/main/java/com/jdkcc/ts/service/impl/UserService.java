@@ -1,55 +1,111 @@
-/**
- * Bestpay.com.cn Inc.
- * Copyright (c) 2011-2016 All Rights Reserved.
- */
 package com.jdkcc.ts.service.impl;
 
-import com.jdkcc.ts.common.enums.Gender;
-import com.jdkcc.ts.dal.entity.JUser;
-import com.jdkcc.ts.dal.mapper.JUserMapper;
-import com.jdkcc.ts.service.api.UserFacade;
-import com.jdkcc.ts.service.dto.request.UserCreateReqDto;
-import com.jdkcc.ts.service.dto.response.UserInfoResDto;
+import com.jdkcc.ts.common.util.ObjectConvertUtil;
+import com.jdkcc.ts.common.util.SHA;
+import com.jdkcc.ts.dal.entity.User;
+import com.jdkcc.ts.dal.mapper.IBaseMapper;
+import com.jdkcc.ts.dal.mapper.UserMapper;
+import com.jdkcc.ts.service.dto.request.BasicSearchReq;
+import com.jdkcc.ts.service.dto.request.user.UserSaveReq;
+import com.jdkcc.ts.service.dto.request.user.UserSearchReq;
+import com.jdkcc.ts.service.dto.request.user.UserUpdateReq;
+import com.jdkcc.ts.service.dto.response.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
-/**
- * @author Jiangjiaze
- * @version Id: UserService.java, v 0.1 2016/9/28 0028 上午 9:02 FancyKong Exp $$
- */
 @Service
-public class UserService implements UserFacade {
+@Transactional(readOnly = true)
+public class UserService extends ABaseService<User, Long> {
+
+    private final UserMapper userMapper;
+
+    private static final String UNKNOW = "未知";
+    private static final String AC = "激活/在职";
+    private static final String UN = "冻结/离职";
 
     @Autowired
-    private JUserMapper userMapper;
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     @Override
+    protected IBaseMapper<User, Long> getEntityDAO() {
+        return userMapper;
+    }
+
+    public User findByUsername(String username) {
+        log.debug("username_{}没有缓存", username);
+        return userMapper.findByUsername(username);
+    }
+
+    public boolean exist(String username) {
+        return userMapper.findByUsername(username) != null;
+    }
+
+    public Long count() {
+        log.debug("countAllUser没有缓存");
+        return userMapper.count();
+    }
+
+    @Transactional(readOnly = false)
+    public void delete(Long id) {
+        // 并不是真正的删除，只是冻结账户
+        User user = findById(id);
+        user.setActive(0);
+        update(user);
+    }
+
     @Transactional
-    public boolean register(UserCreateReqDto reqDto) {
-        JUser user = new JUser();
-        user.setCity(reqDto.getCity());
-        user.setGender(reqDto.getGender());
-        user.setHeadimgurl(reqDto.getHeadimgurl());
-        user.setNickname(reqDto.getNickname());
-        user.setOpenid(reqDto.getOpenid());
-        user.setSubscribeTime(new Date());
-        userMapper.insert(user);
-        user.setGender(Gender.M.getCode());
-        return userMapper.insert(user) > 0;
+    public void update(UserUpdateReq userUpdateReq) {
+        User user = findById(userUpdateReq.getId());
+        ObjectConvertUtil.objectCopy(user, userUpdateReq);
+        user.setModifiedTime(new Date());
+        update(user);
     }
 
-    @Override
-    public UserInfoResDto getUserInfo(long id) {
-        JUser user = userMapper.selectById(id);
-        return new UserInfoResDto(user.getId(),
-                user.getOpenid(),
-                user.getNickname(),
-                user.getCity(),
-                user.getSubscribeTime(),
-                user.getHeadimgurl(),
-                user.getGender());
+    @Transactional
+    public void insert(UserSaveReq userSaveReq) {
+
+        if (exist(userSaveReq.getUsername())) {
+            return;
+        }
+
+        User user = new User();
+        ObjectConvertUtil.objectCopy(user, userSaveReq);
+        user.setCreatedTime(new Date());
+        user.setModifiedTime(new Date());
+        user.setPassword(SHA.sha1(user.getPassword()));
+        insert(user);
     }
+
+    public Page<UserDTO> findAll(UserSearchReq userSearchReq, BasicSearchReq basicSearchReq) {
+        Integer start = basicSearchReq.getStartIndex();
+        Integer size = basicSearchReq.getPageSize();
+
+        int pageNumber =  start / size + 1;
+        PageRequest pageRequest = new PageRequest(pageNumber, size);
+
+        List<User> users = userMapper.findAll(start, size);
+        Long count = count();
+
+        //有了其它搜索条件
+        Page<User> userPage = new PageImpl<>(users, pageRequest, count);
+
+        return userPage.map(source -> {
+            UserDTO userDTO = new UserDTO();
+            ObjectConvertUtil.objectCopy(userDTO, source);
+            userDTO.setActiveStr(source.getActive() == null ? UNKNOW : source.getActive() == 1 ? AC : UN);
+            return userDTO;
+        });
+
+    }
+
+
 }

@@ -16,7 +16,7 @@ import java.util.Map;
 public class ApiController {
 
 /*
-	private WeixinUserService weixinUserService;
+	private WxUserService wxUserService;
 	private CustomerService customerService;
 
 	*//**
@@ -49,34 +49,34 @@ public class ApiController {
 	public void authCallback(String code, HttpSession session, HttpServletResponse response) {
 		
 		OAuthInfo oAuthInfo = WeixinUtil.getOAuthOpenid(code);
-		WeixinUser weixinUser = null;
+		WxUser wxUser = null;
 		try {
-			weixinUser = weixinUserService.findByOpenid(oAuthInfo.getOpenid());
+			wxUser = wxUserService.findByOpenid(oAuthInfo.getOpenid());
 		} catch (NoResultException e) {
-			log.info("openid:{}第一次登陆本系统,数据库没有对应的weixinUser数据", oAuthInfo.getOpenid());
+			log.info("openid:{}第一次登陆本系统,数据库没有对应的wxUser数据", oAuthInfo.getOpenid());
 			e.printStackTrace();
 		}
 
 		try {
-			if (weixinUser == null || weixinUser.getId() == null) {
+			if (wxUser == null || wxUser.getId() == null) {
 				UserInfo userInfo = WeixinUtil.getUserInfo(oAuthInfo.getOpenid(), oAuthInfo.getAccessToken());
-				weixinUser = new WeixinUser();
-				weixinUser.setOpenid(oAuthInfo.getOpenid());
+				wxUser = new WxUser();
+				wxUser.setOpenid(oAuthInfo.getOpenid());
 				if (userInfo != null) {
-					weixinUser.setCity(userInfo.getCity());
-					weixinUser.setHeadimgurl(userInfo.getHeadimgurl());
-					weixinUser.setNickname(userInfo.getNickname());
-					weixinUser.setSex(userInfo.getSex().shortValue());
-					weixinUser.setSubscribeTime(new Date());
+					wxUser.setCity(userInfo.getCity());
+					wxUser.setHeadimgurl(userInfo.getHeadimgurl());
+					wxUser.setNickname(userInfo.getNickname());
+					wxUser.setSex(userInfo.getSex().shortValue());
+					wxUser.setSubscribeTime(new Date());
 				}
-				log.info("openid:{} 保存weixinUser到数据库", oAuthInfo.getOpenid());
-				weixinUser = weixinUserService.insert(weixinUser);
+				log.info("openid:{} 保存wxUser到数据库", oAuthInfo.getOpenid());
+				wxUser = wxUserService.insert(wxUser);
 			}
 
-			SessionUtil.addWeixinUser(weixinUser);
+			SessionUtil.addWxUser(wxUser);
 
 			//如果还没有关联用户的，要去注册一个客户作为绑定
-			if (customerService.findByWeixinUserId(weixinUser.getId()) != null) {
+			if (customerService.findByWxUserId(wxUser.getId()) != null) {
 				response.sendRedirect(WeixinConfig.getValue("registerURL"));
 			} else {
 				response.sendRedirect(WeixinConfig.getValue("indexURL"));

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jdkcc.ts.dal.mapper.WxUserMapper">
+    <resultMap id="BaseResultMap" type="com.jdkcc.ts.dal.entity.WxUser">
+        <id     column="id"             property="id"               jdbcType="BIGINT"/>
+        <result column="openid"         property="openid"           jdbcType="VARCHAR"/>
+        <result column="nickname"       property="nickname"         jdbcType="VARCHAR"/>
+        <result column="sex"            property="sex"              jdbcType="INTEGER"/>
+        <result column="country"        property="country"          jdbcType="VARCHAR"/>
+        <result column="province"       property="province"         jdbcType="VARCHAR"/>
+        <result column="city"           property="city"             jdbcType="VARCHAR"/>
+        <result column="headimgurl"     property="headimgurl"       jdbcType="VARCHAR"/>
+        <result column="subscribe_time"  property="subscribeTime"    jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        openid,
+        nickname,
+        sex,
+        country,
+        province,
+        city,
+        headimgurl,
+        subscribe_time
+    </sql>
+
+    <insert id="insert" parameterType="com.jdkcc.ts.dal.entity.WxUser">
+        INSERT INTO t_wxuser (
+        <include refid="Base_Column_List"/>
+        )
+        VALUES (
+        0,
+        #{openid,jdbcType=VARCHAR},
+        #{nickname,jdbcType=VARCHAR},
+        #{sex,jdbcType=INTEGER},
+        #{country,jdbcType=VARCHAR},
+        #{province,jdbcType=VARCHAR},
+        #{city,jdbcType=VARCHAR},
+        #{headimgurl,jdbcType=VARCHAR},
+        #{subscribeTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="com.jdkcc.ts.dal.entity.WxUser">
+        INSERT INTO t_wxuser (
+        <include refid="Base_Column_List"/>
+        )
+        VALUES (
+        #{id,jdbcType=BIGINT},
+        #{openid,jdbcType=VARCHAR},
+        #{nickname,jdbcType=VARCHAR},
+        #{sex,jdbcType=INTEGER},
+        #{country,jdbcType=VARCHAR},
+        #{province,jdbcType=VARCHAR},
+        #{city,jdbcType=VARCHAR},
+        #{headimgurl,jdbcType=VARCHAR},
+        #{subscribeTime,jdbcType=TIMESTAMP})
+        WHERE
+        id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_wxuser WHERE id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="count" resultMap="java.lang.Long" parameterType="java.lang.Long">
+        SELECT count(*) FROM t_wxuser
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE  FROM t_wxuser WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <select id="findAll" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_wxuser
+        limit #{0,jdbcType=INTEGER},#{1,jdbcType=INTEGER}
+        ORDER BY id
+    </select>
+
+    <select id="findByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_wxuser WHERE openid = #{openid,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <meta name="author" content="Cherish"/>
-    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon" />
+    <link rel="shortcut icon" th:href="@{/static/favicon.ico}" type="image/x-icon" />
 
-	<title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Cherish管理系统</title>
+	<title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Ts管理系统</title>
 
     <script>
         if(top.location!=self.location)top.location=self.location;
@@ -72,35 +72,35 @@
             <ul class="nav nav-pills nav-stacked custom-nav">
                 <li id="datapanelLi"><a th:href="@{/admin}"><i class="fa fa-home"></i> <span> 数据面板</span></a></li>
 
-                <p shiro:hasAnyPermissions="user:show">
+                <div sec:authorize="hasAnyAuthority('user:show')">
                     <li class="menu-list" id="userMenu"><a href=""><i class="fa fa-user"></i>
                     <span> 用户管理</span></a>
                     <ul class="sub-menu-list">
-                        <p shiro:hasPermission="user:show">
+                        <div sec:authorize="hasAnyAuthority('user:show')">
                             <li id="userLi"><a th:href="@{/user}"> 用户列表</a></li>
-                        </p>
-                        <p shiro:hasPermission="user:show">
+                        </div>
+                        <div sec:authorize="hasAnyAuthority('user:show')">
                             <li id="customerLi"><a th:href="@{/customer}"> 客户列表</a></li>
-                        </p>
-                        <p shiro:hasRole="super">
+                        </div>
+                        <div sec:authorize="hasRole('ROLE_ADMIN')">
                             <li id="roleLi"><a th:href="@{/role}"> 角色列表</a></li>
-                        </p>
-                        <p shiro:hasRole="super">
+                        </div>
+                        <div sec:authorize="hasRole('ROLE_ADMIN')">
                             <li id="permitLi"><a th:href="@{/permission}"> 权限列表</a></li>
-                        </p>
-                        <p shiro:hasRole="super">
+                        </div>
+                        <div sec:authorize="hasRole('ROLE_ADMIN')">
                             <li id="superLi"><a th:href="@{/super}"> 权限控制</a></li>
-                        </p>
+                        </div>
                     </ul></li>
-                </p>
+                </div>
 
-                <p shiro:hasAnyPermissions="info:show">
+                <div sec:authorize="hasAnyAuthority('info:show')">
                     <li class="menu-list" id="infoMenu"><a href=""><i class="fa fa-area-chart"></i>
                         <span> 资讯管理</span></a>
                         <ul class="sub-menu-list">
                             <li id="#any"><a href="#"> 文章列表</a></li>
                         </ul></li>
-                </p>
+                </div>
 
             </ul>
             <!--sidebar nav end-->
@@ -140,9 +140,9 @@
         </div>
         <!-- header section end-->
 
-        <p shiro:authenticated="">
+        <div sec:authentication="">
             <div id="contentpage" layout:fragment="content"></div>
-        </p>
+        </div>
 
         <footer>
             2017 &copy; cafa.com By CAFA

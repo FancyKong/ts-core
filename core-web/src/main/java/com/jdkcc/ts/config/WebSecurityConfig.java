@@ -1,6 +1,6 @@
 package com.jdkcc.ts.config;
 
-import com.jdkcc.ts.service.impl2.UserService;
+import com.jdkcc.ts.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     UserDetailsService customUserService() {
-        return new UserService();
+        return new UserDetailsServiceImpl();
     }
 
     @Override

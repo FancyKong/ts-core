@@ -4,7 +4,7 @@
  */
 package com.jdkcc.ts.service.component.kafka.manager;
 
-import com.jdkcc.ts.dal.entity.JUser;
+import com.jdkcc.ts.dal.entity.User;
 import com.jdkcc.ts.service.component.kafka.common.BussinessProcess;
 import com.jdkcc.ts.service.component.kafka.common.GroupName;
 import com.jdkcc.ts.service.component.kafka.common.Topic;
@@ -80,7 +80,7 @@ public class MsgConsumer {
     }*/
     @PostConstruct
     public void consumerUser() {
-        new Thread(() -> consume(Topic.USER.getCode(), GroupName.USER.getCode(), UserProcess.class, JUser.class)).start();
+        new Thread(() -> consume(Topic.USER.getCode(), GroupName.USER.getCode(), UserProcess.class, User.class)).start();
     }
 
     @PostConstruct

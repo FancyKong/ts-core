@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.jdkcc.ts.dal.mapper.JUserMapper">
+<mapper namespace="com.jdkcc.ts.dal.mapper.RoleMapper">
     <resultMap id="BaseResultMap" type="com.jdkcc.ts.dal.entity.Role">
-        <id     column="ID"             property="id"               jdbcType="BIGINT"/>
-        <result column="NAME"           property="name"             jdbcType="VARCHAR"/>
-        <result column="DESCRIPTION"    property="description"      jdbcType="VARCHAR"/>
+        <id     column="id"             property="id"               jdbcType="BIGINT"/>
+        <result column="name"           property="name"             jdbcType="VARCHAR"/>
+        <result column="description"    property="description"      jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ID,
-        NAME,
-        DESCRIPTION,
+        id,
+        name,
+        description,
     </sql>
 
     <insert id="insert" parameterType="com.jdkcc.ts.dal.entity.Role">
-        INSERT INTO T_ROLE (
+        INSERT INTO t_role (
         <include refid="Base_Column_List"/>
         )
         VALUES (
@@ -23,7 +23,7 @@
     </insert>
 
     <update id="update" parameterType="com.jdkcc.ts.dal.entity.Role">
-        INSERT INTO T_ROLE (
+        INSERT INTO t_role (
         <include refid="Base_Column_List"/>
         )
         VALUES (
@@ -31,44 +31,43 @@
         #{name,jdbcType=VARCHAR},
         #{description,jdbcType=VARCHAR}
         WHERE
-        ID = #{id,jdbcType=BIGINT}
+        id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM T_ROLE WHERE ID = #{id,jdbcType=BIGINT}
+        FROM t_role WHERE id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="count" resultMap="java.lang.Long" parameterType="java.lang.Long">
-        SELECT count(*) FROM T_ROLE
+        SELECT count(*) FROM t_role
     </select>
 
     <delete id="delete" parameterType="java.lang.Long">
-        DELETE  FROM T_ROLE WHERE ID = #{id,jdbcType=BIGINT}
+        DELETE  FROM t_role WHERE id = #{id,jdbcType=BIGINT}
     </delete>
 
     <select id="findAll" resultMap="BaseResultMap" >
         SELECT
         <include refid="Base_Column_List"/>
-        FROM T_ROLE
-        WHERE ID = #{id,jdbcType=BIGINT}
+        FROM t_role
         limit #{0,jdbcType=INTEGER},#{1,jdbcType=INTEGER}
-        ORDER BY ID
+        ORDER BY id
     </select>
 
     <select id="findByName" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM T_ROLE WHERE NAME = #{name,jdbcType=VARCHAR}
+        FROM t_role WHERE name = #{name,jdbcType=VARCHAR}
     </select>
 
     <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM T_ROLE AS r
-        INNER JOIN T_USER_ROLE AS ur
-        WHERE r.ID = ur.ROLE_ID AND ur.USER_ID = #{0,jdbcType=BIGINT}
+        FROM t_role AS r
+        INNER JOIN t_user_role AS ur
+        WHERE r.id = ur.role_id AND ur.user_id = #{0,jdbcType=BIGINT}
     </select>
 
 </mapper>
