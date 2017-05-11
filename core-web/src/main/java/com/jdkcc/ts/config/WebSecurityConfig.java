@@ -1,14 +1,12 @@
 package com.jdkcc.ts.config;
 
-import com.jdkcc.ts.service.impl.UserDetailsServiceImpl;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * 安全框架配置
@@ -26,8 +24,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/","/login","/logout","/validateCode","/**/favicon.ico",
                         "/static/**", "/css/**", "/js/**", "/images/**", "/tools/**",
-                        "/api/**","/imageDownload*").permitAll()
-                .anyRequest().hasRole("ADMIN")//允许所有
+                        "/api/**","/imageDownload*").permitAll()//允许所有
+                .anyRequest().hasRole("ADMIN")
                 .and()
             .formLogin()
                 .loginPage("/login")
@@ -39,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-    @Bean
+    /*@Bean
     UserDetailsService customUserService() {
         return new UserDetailsServiceImpl();
     }
@@ -47,7 +45,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserService());
+    }*/
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+            .inMemoryAuthentication()
+            .withUser("cherish").password("cherish").roles("ADMIN")
+            .and()
+            .withUser("fancykong").password("fancykong").roles("ADMIN");
     }
+
 
 
 }
