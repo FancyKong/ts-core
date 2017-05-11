@@ -10,6 +10,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -34,10 +40,12 @@ import java.util.Map;
 public class BasicController extends ABaseController {
 
 	private final UserService userService;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public BasicController(UserService userService) {
+    public BasicController(UserService userService, AuthenticationManager authenticationManager) {
         this.userService = userService;
+        this.authenticationManager = authenticationManager;
     }
 
     /**
@@ -82,8 +90,7 @@ public class BasicController extends ABaseController {
 			log.debug("验证码不正确");
             errorMap.put("validateCodeError", "验证码不正确");
             //添加上表单输入数据返回给页面
-            modelAndView.addObject("usernameInput", loginReq.getUsername());
-            modelAndView.addObject("passwordInput", loginReq.getPassword());
+			modelAndView.addObject("loginReq", loginReq);
 			return modelAndView;
 		}
 
@@ -91,14 +98,23 @@ public class BasicController extends ABaseController {
 		if (bindingResult.hasErrors()) {
 			errorMap.putAll(getErrors(bindingResult));
             //添加上表单输入数据返回给页面
-            modelAndView.addObject("usernameInput", loginReq.getUsername());
-            modelAndView.addObject("passwordInput", loginReq.getPassword());
-
-		}else {
-			//TODO 实现登陆
-
-
+			modelAndView.addObject("loginReq", loginReq);
+            return modelAndView;
 		}
+
+        UsernamePasswordAuthenticationToken authRequest =
+                new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword());
+        try {
+            Authentication authentication = authenticationManager.authenticate(authRequest);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            HttpSession session = request.getSession();
+            session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext()); // 这个非常重要，否则验证后将无法登陆  
+
+            modelAndView.addObject("msg","登录用户："+authentication.getName());
+        } catch (AuthenticationException ex) {
+            modelAndView.addObject("msg","用户名或密码错误");
+        }
+
 		return modelAndView;
 	}
 
@@ -125,7 +141,7 @@ public class BasicController extends ABaseController {
 	}
 
 	//文件存放路径
-	private static final String FILE_PATH = "F:/cherish";
+	private static final String FILE_PATH = "/cherish";
 
 	@PostMapping("/imageUpload")
 	@ResponseBody
@@ -164,7 +180,7 @@ public class BasicController extends ABaseController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentDispositionFormData("attachment", filename);
 		headers.setContentType(MediaType.IMAGE_PNG);
-		return new ResponseEntity<byte[]>(
+		return new ResponseEntity<>(
 				FileUtils.readFileToByteArray(file),
 				headers, HttpStatus.OK);
 	}

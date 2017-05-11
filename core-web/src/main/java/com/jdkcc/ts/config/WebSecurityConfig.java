@@ -24,10 +24,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();// csrf:Cross-site doQuery forgery跨站请求伪造
         http
             .authorizeRequests()
-                .antMatchers("/","/login","/validateCode","/**/favicon.ico",
+                .antMatchers("/","/login","/logout","/validateCode","/**/favicon.ico",
                         "/static/**", "/css/**", "/js/**", "/images/**", "/tools/**",
                         "/api/**","/imageDownload*").permitAll()
-                .anyRequest().permitAll()//允许所有
+                .anyRequest().hasRole("ADMIN")//允许所有
                 .and()
             .formLogin()
                 .loginPage("/login")

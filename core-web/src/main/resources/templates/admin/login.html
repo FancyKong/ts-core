@@ -35,11 +35,11 @@
 
         <div class="login-wrap">
             <input type="text" name="username" class="form-control" placeholder="登录名" autofocus
-                   required minlength="6" maxlength="16" th:value="${usernameInput}">
+                   required minlength="6" maxlength="16" th:value="${loginReq} ? ${loginReq.username}">
                 <label class="error-label" th:text="${errorMap} ? ${errorMap['username']}"></label>
 
             <input type="password" name="password" class="form-control" placeholder="密码"
-                   required minlength="6" maxlength="16" th:value="${passwordInput}">
+                   required minlength="6" maxlength="16" th:value="${loginReq} ? ${loginReq.password}">
                 <label class="error-label" th:text="${errorMap} ? ${errorMap['password']}"></label>
 
             <input type="text" name="validateCode" class="form-control" placeholder="验证码"
