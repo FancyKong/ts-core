@@ -4,7 +4,7 @@
  */
 package com.jdkcc.ts.service.component.kafka.process;
 
-import com.jdkcc.ts.dal.entity.JUser;
+import com.jdkcc.ts.dal.entity.User;
 import com.jdkcc.ts.service.component.kafka.common.BussinessProcess;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,10 +14,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 //@Component
-public class UserProcess extends BussinessProcess<JUser>{
+public class UserProcess extends BussinessProcess<User>{
 
     @Override
-    public void doBussiness(JUser jUser) {
-        log.info("doing jUser process:{}",jUser);
+    public void doBussiness(User user) {
+        log.info("doing jUser process:{}",user);
     }
 }
