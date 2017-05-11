@@ -23,12 +23,16 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class CustomerService extends ABaseService<Customer, Long> {
 
-    @Autowired
-    private CustomerMapper customerMapper;
+    private final CustomerMapper customerMapper;
 
     private static final String UNKNOW = "未知";
     private static final String AC = "激活";
     private static final String UN = "冻结";
+
+    @Autowired
+    public CustomerService(CustomerMapper customerMapper) {
+        this.customerMapper = customerMapper;
+    }
 
     @Override
     protected IBaseMapper<Customer, Long> getEntityDAO() {

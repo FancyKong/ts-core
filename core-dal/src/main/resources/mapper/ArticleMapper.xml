@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jdkcc.ts.dal.mapper.ArticleMapper">
+    <resultMap id="BaseResultMap" type="com.jdkcc.ts.dal.entity.Article">
+        <id     column="id"             property="id"               jdbcType="BIGINT"/>
+        <result column="title"          property="title"         jdbcType="VARCHAR"/>
+        <result column="content"        property="content"        jdbcType="VARCHAR"/>
+        <result column="read_sum"       property="readSum"           jdbcType="INTEGER"/>
+        <result column="created_time"   property="createdTime"      jdbcType="TIMESTAMP"/>
+        <result column="modified_time"  property="modifiedTime"     jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        title,
+        content,
+        created_time,
+        modified_time,
+        read_sum
+    </sql>
+
+    <insert id="insert" parameterType="com.jdkcc.ts.dal.entity.Article">
+        INSERT INTO t_article (
+        <include refid="Base_Column_List"/>
+        )
+        VALUES (
+        0,
+        #{title,jdbcType=VARCHAR},
+        #{content,jdbcType=VARCHAR},
+        #{createdTime,jdbcType=TIMESTAMP},
+        #{modifiedTime,jdbcType=TIMESTAMP},
+        #{readSum,jdbcType=INTEGER})
+    </insert>
+
+    <update id="update" parameterType="com.jdkcc.ts.dal.entity.Article">
+        INSERT INTO t_article (
+        <include refid="Base_Column_List"/>
+        )
+        VALUES (
+        #{id,jdbcType=BIGINT},
+        #{title,jdbcType=VARCHAR},
+        #{content,jdbcType=VARCHAR},
+        #{createdTime,jdbcType=TIMESTAMP},
+        #{modifiedTime,jdbcType=TIMESTAMP},
+        #{readSum,jdbcType=INTEGER})
+        WHERE
+        id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_article WHERE id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="count" resultMap="java.lang.Long" parameterType="java.lang.Long">
+        SELECT count(*) FROM t_article
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE  FROM t_article WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <select id="findAll" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_article
+        limit #{0,jdbcType=INTEGER},#{1,jdbcType=INTEGER}
+        ORDER BY id
+    </select>
+
+    <select id="findByTelephone" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_article WHERE content = #{content,jdbcType=VARCHAR}
+    </select>
+
+</mapper>
