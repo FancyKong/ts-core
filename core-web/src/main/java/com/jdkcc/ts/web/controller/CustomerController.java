@@ -1,11 +1,11 @@
 package com.jdkcc.ts.web.controller;
 
-import com.jdkcc.ts.service.dto.MResponse;
-import com.jdkcc.ts.service.dto.response.CustomerDTO;
 import com.jdkcc.ts.dal.entity.Customer;
+import com.jdkcc.ts.service.dto.MResponse;
 import com.jdkcc.ts.service.dto.request.BasicSearchReq;
 import com.jdkcc.ts.service.dto.request.customer.CustomerReq;
 import com.jdkcc.ts.service.dto.request.customer.CustomerSearchReq;
+import com.jdkcc.ts.service.dto.response.CustomerDTO;
 import com.jdkcc.ts.service.impl.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * 会员
  * Created by Cherish on 2017/1/6.
  */
 @Controller
@@ -154,7 +154,7 @@ public class CustomerController extends ABaseController {
 
         }else {
             try {
-                customerService.insert(customerReq);
+                customerService.save(customerReq);
                 errorMap.put("msg", "添加成功");
 
             } catch (Exception e) {

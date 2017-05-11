@@ -2,70 +2,56 @@ package com.jdkcc.ts.service.impl;
 
 import com.jdkcc.ts.common.util.ObjectConvertUtil;
 import com.jdkcc.ts.dal.entity.Article;
-import com.jdkcc.ts.dal.mapper.ArticleMapper;
-import com.jdkcc.ts.dal.mapper.IBaseMapper;
+import com.jdkcc.ts.dal.repository.ArticleDAO;
+import com.jdkcc.ts.dal.repository.IBaseDAO;
 import com.jdkcc.ts.service.dto.request.ArticleReq;
 import com.jdkcc.ts.service.dto.request.BasicSearchReq;
 import com.jdkcc.ts.service.dto.response.ArticleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
 public class ArticleService extends ABaseService<Article, Long> {
 
-    private final ArticleMapper articleMapper;
+    private final ArticleDAO articleDAO;
 
     @Autowired
-    public ArticleService(ArticleMapper articleMapper) {
-        this.articleMapper = articleMapper;
+    public ArticleService(ArticleDAO articleDAO) {
+        this.articleDAO = articleDAO;
     }
 
     @Override
-    protected IBaseMapper<Article, Long> getEntityDAO() {
-        return articleMapper;
+    protected IBaseDAO<Article, Long> getEntityDAO() {
+        return articleDAO;
     }
 
-    public ArticleDTO findOne(Long ArticleId) {
-        Article article = articleMapper.findOne(ArticleId);
+    public ArticleDTO findOne(Long articleId) {
+        Article article = articleDAO.findOne(articleId);
         return article == null ? null : ObjectConvertUtil.objectCopy(new ArticleDTO(), article);
     }
 
     @Transactional
     public void delete(Long articleId) {
-        Article article = articleMapper.findOne(articleId);
+        Article article = articleDAO.findOne(articleId);
         if (article == null) return;
-
         super.delete(articleId);
     }
 
     public Page<ArticleDTO> findAll(BasicSearchReq basicSearchReq) {
-        Integer start = basicSearchReq.getStartIndex();
-        Integer size = basicSearchReq.getPageSize();
 
-        int pageNumber =  start / size + 1;
-        PageRequest pageRequest = new PageRequest(pageNumber, size);
+        int pageNumber = basicSearchReq.getStartIndex() / basicSearchReq.getPageSize() + 1;
+        Page<Article> articlePage = this.findAll(pageNumber, basicSearchReq.getPageSize());
 
-        List<Article> articleList = articleMapper.findAll( start, size);
-        Long count = count();
-
-        //有了其它搜索条件
-        Page<Article> userPage = new PageImpl<>(articleList, pageRequest, count);
-
-        return userPage.map(this::getArticleDTO);
-    }
-
-    private ArticleDTO getArticleDTO(Article source) {
-        ArticleDTO articleDTO = new ArticleDTO();
-        ObjectConvertUtil.objectCopy(articleDTO, source);
-        return articleDTO;
+        return articlePage.map(source -> {
+            ArticleDTO articleDTO = new ArticleDTO();
+            ObjectConvertUtil.objectCopy(articleDTO, source);
+            return articleDTO;
+        });
     }
 
     @Transactional
@@ -75,18 +61,22 @@ public class ArticleService extends ABaseService<Article, Long> {
 
         ObjectConvertUtil.objectCopy(article, articleReq);
         article.setModifiedTime(new Date());
+        if (article.getReadSum() == null){
+            article.setReadSum(0);
+        }
         this.update(article);
-
     }
 
     @Transactional
-    public void insert(ArticleReq articleReq) {
+    public Article save(ArticleReq articleReq) {
         Article article = new Article();
         ObjectConvertUtil.objectCopy(article, articleReq);
         article.setCreatedTime(new Date());
         article.setModifiedTime(new Date());
-
-        this.insert(article);
+        if (article.getReadSum() == null){
+            article.setReadSum(0);
+        }
+        return this.save(article);
     }
 
 

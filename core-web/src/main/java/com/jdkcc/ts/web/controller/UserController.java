@@ -1,16 +1,14 @@
 package com.jdkcc.ts.web.controller;
 
-import com.jdkcc.ts.common.util.SHA;
-import com.jdkcc.ts.service.dto.MResponse;
-import com.jdkcc.ts.service.dto.response.UserDTO;
 import com.jdkcc.ts.dal.entity.User;
+import com.jdkcc.ts.service.dto.MResponse;
 import com.jdkcc.ts.service.dto.request.BasicSearchReq;
 import com.jdkcc.ts.service.dto.request.user.UserModifyPasswordReq;
 import com.jdkcc.ts.service.dto.request.user.UserSaveReq;
 import com.jdkcc.ts.service.dto.request.user.UserSearchReq;
 import com.jdkcc.ts.service.dto.request.user.UserUpdateReq;
+import com.jdkcc.ts.service.dto.response.UserDTO;
 import com.jdkcc.ts.service.impl.UserService;
-import com.jdkcc.ts.web.util.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,14 +22,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 用户控制器
  * Created by Cherish on 2017/1/6.
  */
 @Controller
 @RequestMapping("user")
 public class UserController extends ABaseController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public ModelAndView index(){
@@ -55,16 +58,7 @@ public class UserController extends ABaseController {
     public ModelAndView updateForm(@PathVariable("userId") Long userId){
         ModelAndView mv = new ModelAndView("admin/user/edit");
         User user = userService.findById(userId);
-        mv.addObject(user);
-        return mv;
-    }
-
-    /**
-     * 用户查看个人信息的页面
-     */
-    @GetMapping("/profile")
-    public ModelAndView profile(){
-        ModelAndView mv = new ModelAndView("admin/user/profile");
+        mv.addObject("user", user);
         return mv;
     }
 
@@ -86,13 +80,10 @@ public class UserController extends ABaseController {
     @GetMapping("/page")
     @ResponseBody
     public MResponse toPage(BasicSearchReq basicSearchReq, UserSearchReq userSearchReq){
-
         try {
             Page<UserDTO> page = userService.findAll(userSearchReq, basicSearchReq);
-
             return buildResponse(Boolean.TRUE, basicSearchReq.getDraw(), page);
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("获取用户列表失败: {}", e.getMessage());
             return buildResponse(Boolean.FALSE, BUSY_MSG, null);
         }
@@ -108,10 +99,8 @@ public class UserController extends ABaseController {
     public MResponse delete(@PathVariable("userId") Long userId){
         try {
             userService.delete(userId);
-
             return buildResponse(Boolean.TRUE, "删除成功", null);
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("删除失败:{}", e.getMessage());
             return buildResponse(Boolean.FALSE, "删除失败", null);
         }
@@ -137,20 +126,16 @@ public class UserController extends ABaseController {
         if (bindingResult.hasErrors()) {
             errorMap.putAll(getErrors(bindingResult));
             mv.addObject("user", userUpdateReq);
-
         }else {
             try {
                 userService.update(userUpdateReq);
-
                 mv.addObject("user", userService.findById(userUpdateReq.getId()));
                 errorMap.put("msg", "修改成功");
             } catch (Exception e) {
-                e.printStackTrace();
                 errorMap.put("msg", "系统繁忙");
                 log.error("修改用户错误:{}", e.getMessage());
             }
         }
-
         return mv;
     }
 
@@ -169,28 +154,22 @@ public class UserController extends ABaseController {
         if (bindingResult.hasErrors()) {
             errorMap.putAll(getErrors(bindingResult));
             mv.addObject("user", userSaveReq);
-
         }else {
             try {
                 if (userService.exist(userSaveReq.getUsername())){
                     errorMap.put("msg", "该用户名已存在，请更换再试");
                     mv.addObject("user", userSaveReq);
                 }else {
-                    userService.insert(userSaveReq);
+                    userService.save(userSaveReq);
                     errorMap.put("msg", "添加成功");
                 }
-
             } catch (Exception e) {
-                e.printStackTrace();
                 errorMap.put("msg", "系统繁忙");
                 log.error("添加用户失败:{}", e.getMessage());
             }
         }
-
         return mv;
     }
-
-
 
     /**
      * 提交密码修改请求
@@ -201,6 +180,7 @@ public class UserController extends ABaseController {
     @PostMapping("/modifyPassword")
     public ModelAndView modifyPassword(@Validated UserModifyPasswordReq modifyPasswordReq, BindingResult bindingResult) {
 
+        log.debug("【修改密码】 {}", modifyPasswordReq);
         ModelAndView mv = new ModelAndView("admin/user/modifyPassword");
         Map<String, Object> errorMap = new HashMap<>();
         mv.addObject("errorMap", errorMap);
@@ -208,7 +188,6 @@ public class UserController extends ABaseController {
         //表单验证是否通过
         if (bindingResult.hasErrors()) {
             errorMap.putAll(getErrors(bindingResult));
-
         }else {
             if (StringUtils.isBlank(modifyPasswordReq.getPassword())
                     || StringUtils.isBlank(modifyPasswordReq.getRepeatPassword())
@@ -219,24 +198,13 @@ public class UserController extends ABaseController {
             }
 
             try {
-                User user = userService.findByUsername(SessionUtil.getUser().getUsername());
-
-                if (!user.getPassword().equals(SHA.sha1(modifyPasswordReq.getOldPassword()))) {
-                    errorMap.put("msg", "密码认证错误");
-                }else {
-                    user.setPassword(SHA.sha1(modifyPasswordReq.getPassword()));
-                    userService.update(user);
-
-                    errorMap.put("msg" ,"更改成功");
-                }
+                //FIXME 逻辑
 
             } catch (Exception e) {
-                e.printStackTrace();
                 log.error("修改密码失败:{}", e.getMessage());
                 errorMap.put("msg", BUSY_MSG);
             }
         }
-
         return mv;
     }
 

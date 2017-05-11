@@ -1,10 +1,11 @@
 package com.jdkcc.ts.service.impl;
 
+import com.jdkcc.ts.common.enums.ActiveEnum;
 import com.jdkcc.ts.common.util.ObjectConvertUtil;
 import com.jdkcc.ts.common.util.SHA;
 import com.jdkcc.ts.dal.entity.User;
-import com.jdkcc.ts.dal.mapper.IBaseMapper;
-import com.jdkcc.ts.dal.mapper.UserMapper;
+import com.jdkcc.ts.dal.repository.IBaseDAO;
+import com.jdkcc.ts.dal.repository.UserDAO;
 import com.jdkcc.ts.service.dto.request.BasicSearchReq;
 import com.jdkcc.ts.service.dto.request.user.UserSaveReq;
 import com.jdkcc.ts.service.dto.request.user.UserSearchReq;
@@ -19,93 +20,100 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
 public class UserService extends ABaseService<User, Long> {
 
-    private final UserMapper userMapper;
-
-    private static final String UNKNOW = "未知";
-    private static final String AC = "激活/在职";
-    private static final String UN = "冻结/离职";
+    private final UserDAO userDAO;
 
     @Autowired
-    public UserService(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
     @Override
-    protected IBaseMapper<User, Long> getEntityDAO() {
-        return userMapper;
+    protected IBaseDAO<User, Long> getEntityDAO() {
+        return userDAO;
     }
 
     public User findByUsername(String username) {
-        log.debug("username_{}没有缓存", username);
-        return userMapper.findByUsername(username);
+        return userDAO.findByUsername(username);
     }
 
     public boolean exist(String username) {
-        return userMapper.findByUsername(username) != null;
+        return userDAO.findByUsername(username) != null;
     }
 
-    public Long count() {
-        log.debug("countAllUser没有缓存");
-        return userMapper.count();
+    public Long getCount() {
+        return userDAO.count();
     }
 
     @Transactional(readOnly = false)
     public void delete(Long id) {
         // 并不是真正的删除，只是冻结账户
         User user = findById(id);
+        if (user == null) return;
+
         user.setActive(0);
-        update(user);
+        this.update(user);
     }
 
     @Transactional
     public void update(UserUpdateReq userUpdateReq) {
         User user = findById(userUpdateReq.getId());
+        if (user == null) return;
+
         ObjectConvertUtil.objectCopy(user, userUpdateReq);
         user.setModifiedTime(new Date());
-        update(user);
+        this.update(user);
     }
 
     @Transactional
-    public void insert(UserSaveReq userSaveReq) {
-
+    public User save(UserSaveReq userSaveReq) {
         if (exist(userSaveReq.getUsername())) {
-            return;
+            return null;
         }
-
         User user = new User();
         ObjectConvertUtil.objectCopy(user, userSaveReq);
         user.setCreatedTime(new Date());
         user.setModifiedTime(new Date());
         user.setPassword(SHA.sha1(user.getPassword()));
-        insert(user);
+        return this.save(user);
     }
 
     public Page<UserDTO> findAll(UserSearchReq userSearchReq, BasicSearchReq basicSearchReq) {
-        Integer start = basicSearchReq.getStartIndex();
-        Integer size = basicSearchReq.getPageSize();
 
-        int pageNumber =  start / size + 1;
-        PageRequest pageRequest = new PageRequest(pageNumber, size);
+        int pageNumber = basicSearchReq.getStartIndex() / basicSearchReq.getPageSize() + 1;
+        PageRequest pageRequest = super.buildPageRequest(pageNumber, basicSearchReq.getPageSize());
 
-        List<User> users = userMapper.findAll(start, size);
-        Long count = count();
+        //除了分页条件没有特定搜索条件的，为了缓存count
+        if (ObjectConvertUtil.objectFieldIsBlank(userSearchReq)){
+            List<User> userList = userDAO.listAllPaged(pageRequest);
+            List<UserDTO> userDTOList = userList.stream().map(source -> {
+                UserDTO userDTO = new UserDTO();
+                ObjectConvertUtil.objectCopy(userDTO, source);
+                userDTO.setActiveStr(ActiveEnum.getDesc(source.getActive()));
+                return userDTO;
+            }).collect(Collectors.toList());
+
+            //为了计算总数使用缓存，加快搜索速度
+            Long count = getCount();
+            return new PageImpl<>(userDTOList, pageRequest, count);
+        }
 
         //有了其它搜索条件
-        Page<User> userPage = new PageImpl<>(users, pageRequest, count);
+        Page<User> userPage = super.findAllBySearchParams(
+                buildSearchParams(userSearchReq), pageNumber, basicSearchReq.getPageSize());
 
         return userPage.map(source -> {
             UserDTO userDTO = new UserDTO();
             ObjectConvertUtil.objectCopy(userDTO, source);
-            userDTO.setActiveStr(source.getActive() == null ? UNKNOW : source.getActive() == 1 ? AC : UN);
+            userDTO.setActiveStr(ActiveEnum.getDesc(source.getActive()));
             return userDTO;
         });
 
     }
-
 
 }

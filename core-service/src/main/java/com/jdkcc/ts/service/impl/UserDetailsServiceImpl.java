@@ -1,7 +1,7 @@
 package com.jdkcc.ts.service.impl;
 
 import com.jdkcc.ts.dal.entity.User;
-import com.jdkcc.ts.dal.mapper.UserMapper;
+import com.jdkcc.ts.dal.repository.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,12 +16,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserDAO userDAO;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userMapper.findByUsername(username);
+        User user = userDAO.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("用户不存在");
         }

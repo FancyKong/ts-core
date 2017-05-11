@@ -77,8 +77,8 @@ public class BasicController extends ABaseController {
 	 */
 	@PostMapping(value = "/login")
 	public ModelAndView login(@Validated UserLoginReq loginReq, BindingResult bindingResult, HttpServletRequest request){
-
-		ModelAndView modelAndView = new ModelAndView();
+        log.info("【執行登陸】{}", loginReq);
+        ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("admin/login");
         Map<String, Object> errorMap = new HashMap<>();
         modelAndView.addObject("errorMap", errorMap);

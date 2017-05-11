@@ -131,17 +131,17 @@ public class ArticleController extends ABaseController {
         if (bindingResult.hasErrors()) {
             errorMap.putAll(getErrors(bindingResult));
             mv.addObject("article", articleReq);
-            return mv;
+        }else {
+            try {
+                articleService.update(articleReq);
+                mv.addObject("article", articleService.findById(articleReq.getId()));
+                errorMap.put("msg", "修改成功");
+            } catch (Exception e) {
+                errorMap.put("msg", "系统繁忙");
+                log.error("修改错误:{}", e.getMessage());
+            }
         }
 
-        try {
-            articleService.update(articleReq);
-            mv.addObject("article", articleService.findById(articleReq.getId()));
-            errorMap.put("msg", "修改成功");
-        } catch (Exception e) {
-            errorMap.put("msg", "系统繁忙");
-            log.error("修改错误:{}", e.getMessage());
-        }
         return mv;
     }
 
@@ -160,15 +160,16 @@ public class ArticleController extends ABaseController {
         if (bindingResult.hasErrors()) {
             errorMap.putAll(getErrors(bindingResult));
             mv.addObject("article", articleReq);
-            return mv;
-        }
+        }else {
+            try {
+                articleService.save(articleReq);
+                errorMap.put("msg", "添加成功");
 
-        try {
-            articleService.insert(articleReq);
-            errorMap.put("msg", "添加成功");
-        } catch (Exception e) {
-            errorMap.put("msg", "系统繁忙");
-            log.error("添加失败:{}", e.getMessage());
+            } catch (Exception e) {
+                
+                errorMap.put("msg", "系统繁忙");
+                log.error("添加失败:{}", e.getMessage());
+            }
         }
         return mv;
     }

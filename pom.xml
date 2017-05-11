@@ -207,13 +207,6 @@
                 <version>1.24</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
-            <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>1.2.0</version>
-            </dependency>
-
             <dependency>
                 <artifactId>thymeleaf-spring4</artifactId>
                 <groupId>org.thymeleaf</groupId>
