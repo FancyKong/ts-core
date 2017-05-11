@@ -24,7 +24,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <!--Spring-boot-->
-        <boot.version>1.5.1.RELEASE</boot.version>
+        <boot.version>1.4.3.RELEASE</boot.version>
         <!-- core -->
         <mybatis.version>3.4.1</mybatis.version>
         <mybatis-spring.version>1.3.0</mybatis-spring.version>
@@ -33,6 +33,8 @@
         <fastjson.version>1.2.24</fastjson.version>
         <guava.version>20.0</guava.version>
         <poi.version>3.14</poi.version>
+        <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
+        <thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
     </properties>
 
     <dependencyManagement>
@@ -210,6 +212,22 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>1.2.0</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>thymeleaf-spring4</artifactId>
+                <groupId>org.thymeleaf</groupId>
+                <version>3.0.2.RELEASE</version>
+            </dependency>
+            <dependency>
+                <artifactId>thymeleaf</artifactId>
+                <groupId>org.thymeleaf</groupId>
+                <version>3.0.2.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.thymeleaf.extras</groupId>
+                <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+                <version>3.0.1.RELEASE</version>
             </dependency>
 
             <!--Dal-->

@@ -59,46 +59,30 @@
                         </h4>
                     </div>
                 </div>
-
-                <h5 class="left-nav-title">用户信息</h5>
-                <ul class="nav nav-pills nav-stacked custom-nav">
-                    <li><a th:href="@{/user/profile}"><i class="fa fa-user"></i> <span>个人信息</span></a></li>
-                    <li><a th:href="@{/user/modifyPassword}"><i class="fa fa-edit"></i> <span>修改密码</span></a></li>
-                    <li><a th:href="@{/logout}"><i class="fa fa-sign-out"></i> <span>登出</span></a></li>
-                </ul>
             </div>
 
             <!--sidebar nav start-->
             <ul class="nav nav-pills nav-stacked custom-nav">
                 <li id="datapanelLi"><a th:href="@{/admin}"><i class="fa fa-home"></i> <span> 数据面板</span></a></li>
 
-                <div sec:authorize="hasAnyAuthority('user:show')">
+                <div sec:authorize="hasRole('ROLE_ADMIN')">
                     <li class="menu-list" id="userMenu"><a href=""><i class="fa fa-user"></i>
                     <span> 用户管理</span></a>
                     <ul class="sub-menu-list">
-                        <div sec:authorize="hasAnyAuthority('user:show')">
+                        <div sec:authorize="hasRole('ROLE_ADMIN')">
                             <li id="userLi"><a th:href="@{/user}"> 用户列表</a></li>
                         </div>
-                        <div sec:authorize="hasAnyAuthority('user:show')">
+                        <div sec:authorize="hasRole('ROLE_ADMIN')">
                             <li id="customerLi"><a th:href="@{/customer}"> 客户列表</a></li>
-                        </div>
-                        <div sec:authorize="hasRole('ROLE_ADMIN')">
-                            <li id="roleLi"><a th:href="@{/role}"> 角色列表</a></li>
-                        </div>
-                        <div sec:authorize="hasRole('ROLE_ADMIN')">
-                            <li id="permitLi"><a th:href="@{/permission}"> 权限列表</a></li>
-                        </div>
-                        <div sec:authorize="hasRole('ROLE_ADMIN')">
-                            <li id="superLi"><a th:href="@{/super}"> 权限控制</a></li>
                         </div>
                     </ul></li>
                 </div>
 
-                <div sec:authorize="hasAnyAuthority('info:show')">
+                <div sec:authorize="hasRole('ROLE_ADMIN')">
                     <li class="menu-list" id="infoMenu"><a href=""><i class="fa fa-area-chart"></i>
                         <span> 资讯管理</span></a>
                         <ul class="sub-menu-list">
-                            <li id="#any"><a href="#"> 文章列表</a></li>
+                            <li id="articleLi"><a th:href="@{/article}"> 文章列表</a></li>
                         </ul></li>
                 </div>
 
@@ -128,7 +112,6 @@
                             th:src="@{/images/user-avatar.png}" alt="" /> <span th:text="${#session.getAttribute('nickname')}"></span> <span class="caret"></span>
                     </a>
                         <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
-                            <li><a th:href="@{/user/profile}"><i class="fa fa-user"></i> 个人信息</a></li>
                             <li><a th:href="@{/user/modifyPassword}"><i class="fa fa-edit"></i> <span>修改密码</span></a></li>
                             <li><a th:href="@{/logout}"><i class="fa fa-sign-out"></i> 登出</a></li>
                         </ul></li>
@@ -170,15 +153,6 @@
 
 <!--bootstrap input mask-->
 <script type="text/javascript" src="/tools/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
-<script>
-    //去除shiro模板产生的p标签
-    $(function () {
-        var $allP = $(".custom-nav p");
-        $.each($allP ,function (index, obj) {
-            $(obj).remove();
-        })
-    });
-</script>
 
 <!-- 引入被装饰的js代码 -->
 <div layout:fragment="javascript"></div>
