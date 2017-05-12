@@ -1,19 +1,19 @@
-package com.jdkcc.ts.service.wechat.weixinjs;
+package com.jdkcc.ts.wechat.weixinjs;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Throwables;
-import com.jdkcc.ts.service.wechat.weixin4j.WeixinConfig;
+import com.jdkcc.ts.wechat.weixin4j.WeixinConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import javax.servlet.ServletContext;
 import java.io.IOException;
 
 @Slf4j
@@ -41,6 +41,36 @@ public class WeixinJs {
 		return access_token;//
 	}
 
+    public static String getAccess_token(ServletContext application) {
+        String accessToken = "accessToken";
+        String accessTokenTime = "accessTokenTime";
+
+        Long oldtime = (Long) application.getAttribute(accessTokenTime);
+        Long nowtime = System.currentTimeMillis();
+
+        if (oldtime == null || oldtime < nowtime - 3600 * 1000) {
+            // 重置accessToken
+            application.setAttribute(accessTokenTime, nowtime);
+            application.setAttribute(accessToken, WeixinJs.getAccess_token());
+        }
+        return (String) application.getAttribute(accessToken);
+    }
+
+	public static String getJsApiTicket(ServletContext application) {
+		String ticket = "ticket";
+		String ticketTime = "ticketTime";
+
+		Long oldtime = (Long) application.getAttribute(ticketTime);
+		Long nowtime = System.currentTimeMillis();
+
+		if (oldtime == null || oldtime < nowtime - 3600 * 1000) {
+			// 重置accessToken
+			application.setAttribute(ticketTime, nowtime);
+			application.setAttribute(ticket, getJsApiTicket(getAccess_token(application)));
+		}
+
+		return (String) application.getAttribute(ticket);
+	}
 
 	/**
 	 * 调用微信JS接口的临时票据

@@ -1,4 +1,4 @@
-package com.jdkcc.ts.service.wechat.weixin4j;
+package com.jdkcc.ts.wechat.weixin4j;
 
 import com.google.common.base.Throwables;
 import lombok.extern.slf4j.Slf4j;

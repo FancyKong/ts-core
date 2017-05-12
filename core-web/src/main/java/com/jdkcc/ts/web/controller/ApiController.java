@@ -1,13 +1,27 @@
 package com.jdkcc.ts.web.controller;
 
-import com.jdkcc.ts.service.wechat.weixin4j.WeixinConfig;
-import com.jdkcc.ts.service.wechat.weixinjs.Sign;
+import com.google.common.base.Throwables;
+import com.jdkcc.ts.dal.entity.WxUser;
+import com.jdkcc.ts.service.impl.WxUserService;
+import com.jdkcc.ts.web.util.SessionUtil;
+import com.jdkcc.ts.wechat.weixin4j.OAuthInfo;
+import com.jdkcc.ts.wechat.weixin4j.UserInfo;
+import com.jdkcc.ts.wechat.weixin4j.WeixinConfig;
+import com.jdkcc.ts.wechat.weixin4j.WeixinUtil;
+import com.jdkcc.ts.wechat.weixinjs.Sign;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.NoResultException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
 @Slf4j
@@ -15,46 +29,49 @@ import java.util.Map;
 @RequestMapping(value = "/api")
 public class ApiController {
 
-/*
-	private WxUserService wxUserService;
-	private CustomerService customerService;
+    private final WxUserService wxUserService;
 
-	*//**
+    @Autowired
+    public ApiController(WxUserService wxUserService) {
+        this.wxUserService = wxUserService;
+    }
+
+    /**
 	 * 提起授权
 	 * @param response
 	 * @date 2016年8月16日 下午1:33:28
-	 *//*
+	 */
 	@RequestMapping(value = "/toAuth")
 	public void toAuth(HttpServletResponse response) {
 		response.setContentType("text/html;charset=utf-8");
 		try {
-			if (SessionUtil.getCustomer() != null) {
+			if (SessionUtil.getWxUser() != null) {
 				response.sendRedirect(WeixinConfig.getValue("indexURL"));
 			} else {
 				response.sendRedirect(WeixinUtil.getLoginUrl());
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
+            log.error("【toAuth】 {}", Throwables.getStackTraceAsString(e));
+        }
 	}
 
-	*//**
+	/**
 	 * 授权回调接口，获取微信用户信息保存到数据库
 	 * @param code
 	 * @param session
 	 * @param response
 	 * @date 2016年8月16日 下午1:13:47
-	 *//*
+	 */
 	@RequestMapping("/authCallback")
 	public void authCallback(String code, HttpSession session, HttpServletResponse response) {
-		
-		OAuthInfo oAuthInfo = WeixinUtil.getOAuthOpenid(code);
+        log.info("【授权回调】 code: {}", code);
+        OAuthInfo oAuthInfo = WeixinUtil.getOAuthOpenid(code);
 		WxUser wxUser = null;
 		try {
 			wxUser = wxUserService.findByOpenid(oAuthInfo.getOpenid());
 		} catch (NoResultException e) {
-			log.info("openid:{}第一次登陆本系统,数据库没有对应的wxUser数据", oAuthInfo.getOpenid());
-			e.printStackTrace();
+			log.info("【授权回调】 openid: {} 没有对应的wxUser数据", oAuthInfo.getOpenid());
+			log.error("【授权回调】 {}", Throwables.getStackTraceAsString(e));
 		}
 
 		try {
@@ -63,29 +80,27 @@ public class ApiController {
 				wxUser = new WxUser();
 				wxUser.setOpenid(oAuthInfo.getOpenid());
 				if (userInfo != null) {
-					wxUser.setCity(userInfo.getCity());
-					wxUser.setHeadimgurl(userInfo.getHeadimgurl());
-					wxUser.setNickname(userInfo.getNickname());
-					wxUser.setSex(userInfo.getSex().shortValue());
-					wxUser.setSubscribeTime(new Date());
+                    wxUser.setProvince(userInfo.getProvince());
+                    wxUser.setCountry(userInfo.getCountry());
+                    wxUser.setCity(userInfo.getCity());
+                    wxUser.setHeadimgurl(userInfo.getHeadimgurl());
+                    wxUser.setNickname(userInfo.getNickname());
+                    wxUser.setSex(userInfo.getSex().shortValue());
+                    wxUser.setSubscribeTime(new Date());
 				}
-				log.info("openid:{} 保存wxUser到数据库", oAuthInfo.getOpenid());
-				wxUser = wxUserService.insert(wxUser);
+				log.info("【授权回调】 openid: {} 保存wxUser到数据库", oAuthInfo.getOpenid());
+				wxUser = wxUserService.save(wxUser);
 			}
 
 			SessionUtil.addWxUser(wxUser);
+            SessionUtil.add("nickname", wxUser.getNickname());
+            SessionUtil.add("headimgurl", wxUser.getHeadimgurl());
 
-			//如果还没有关联用户的，要去注册一个客户作为绑定
-			if (customerService.findByWxUserId(wxUser.getId()) != null) {
-				response.sendRedirect(WeixinConfig.getValue("registerURL"));
-			} else {
-				response.sendRedirect(WeixinConfig.getValue("indexURL"));
-			}
+            response.sendRedirect(WeixinConfig.getValue("indexURL"));
 		} catch (Exception e) {
-			e.printStackTrace();
-			log.error("openid: {} -> {}", oAuthInfo.getOpenid(), Throwables.getStackTraceAsString(e));
+			log.error("【授权回调】 {}", Throwables.getStackTraceAsString(e));
 		}
-	}*/
+	}
 	
 	/**
 	 * 获取JssdkInitData
@@ -94,16 +109,16 @@ public class ApiController {
 	 */
 	@RequestMapping(value = "/getJsSdkInitData")
 	@ResponseBody
-	public Map getJssdkInitData(String url) {
+	public Map getJssdkInitData(String url,HttpServletRequest request) {
 		Map<String, String> data =  null;
 
-		// TODO 该保存全局
 		if(StringUtils.isNotBlank(url))
-			data = Sign.sign(/*request.getServletContext(),*/ url);
+			data = Sign.sign(request.getServletContext(), url);
 		else
-			data = Sign.sign(/*request.getServletContext(), */WeixinConfig.getValue("indexURL"));
-		
-		return data;
+			data = Sign.sign(request.getServletContext(), WeixinConfig.getValue("indexURL"));
+
+        log.debug("【getJsSdkInitData】 -> {}", data);
+        return data;
 	}
 
 

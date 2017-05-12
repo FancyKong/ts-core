@@ -34,9 +34,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers("/","/login","/logout","/validateCode","/**/favicon.ico",
-                        "/static/**", "/css/**", "/js/**", "/images/**", "/tools/**",
+                        "/druid/**","/static/**", "/css/**", "/js/**", "/images/**", "/tools/**",
                         "/api/**","/imageDownload*").permitAll()//允许所有
-                .anyRequest().hasRole("ADMIN")
+                .anyRequest().authenticated()
                 .and()
             .formLogin()
                 .loginPage("/login")

@@ -69,7 +69,7 @@
                     <span> 用户管理</span></a>
                     <ul class="sub-menu-list">
                         <li id="userLi"><a th:href="@{/user/list}"> 用户列表</a></li>
-                        <li id="customerLi"><a th:href="@{/customer/list}"> 客户列表</a></li>
+                        <li id="wxUserLi"><a th:href="@{/wx_user/list}"> 微信会员</a></li>
                     </ul>
                 </li>
 
@@ -101,14 +101,17 @@
             <div class="menu-right">
                 <ul class="notification-menu">
 
-                    <li><a href="#" class="btn btn-default dropdown-toggle"
-                           data-toggle="dropdown"> <img
-                            th:src="@{/images/user-avatar.png}" alt="" /> <span th:text="${#session.getAttribute('nickname')}"></span> <span class="caret"></span>
-                    </a>
+                    <li>
+                        <a href="#" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
+                            <img th:src="@{/images/user-avatar.png}" alt="" />
+                            <span th:text="${#session.getAttribute('nickname')}"></span>
+                            <span class="caret"></span>
+                        </a>
                         <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
                             <li><a th:href="@{/user/modifyPassword}"><i class="fa fa-edit"></i> <span>修改密码</span></a></li>
                             <li><a th:href="@{/logout}"><i class="fa fa-sign-out"></i> 登出</a></li>
-                        </ul></li>
+                        </ul>
+                    </li>
 
                 </ul>
             </div>

@@ -13,7 +13,7 @@
 				var param = customerManage.getQueryCondition(data);
 				$.ajax({
 					type : "GET",
-					url : "/customer/page",//TODO
+					url : "/wx_user/page",//TODO
 					cache : false, //禁用缓存
 					data : param, //传入已封装的参数
 					dataType : "json",
@@ -46,9 +46,9 @@
 				}, {
 					"data" : 'telephone'
 				}, {
-					"data" : 'createdTime'
+					"data" : 'city'
                 }, {
-                    "data" : 'activeStr'
+                    "data" : 'sex'
 				},
 				CONSTANT.DATA_TABLES.COLUMN.OPERATION
 				],
@@ -132,7 +132,7 @@
 	 //新增行
     $('#otable_new').on('click', function (e) {
         e.preventDefault();
-        var url = "/customer/add";
+        var url = "/wx_user/add";
         window.open(url, "_self");
     });
 
@@ -145,7 +145,7 @@
 
         myConfirm("你确定要删除吗?",function(){
             //向服务器提交删除请求
-            var url = "/customer/"+id+"/delete";
+            var url = "/wx_user/"+id+"/delete";
             var result = delAjax(url);
 
             if(result.success){
@@ -165,6 +165,6 @@
         /* Get the row as a parent of the link that was clicked on */
         var nRow = $(this).parents('tr')[0];
         var id = oTable.row(nRow).id();
-        var url = "/customer/" + id + "/update";
+        var url = "/wx_user/" + id + "/update";
         window.open(url, "_self");
     });

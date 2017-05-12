@@ -1,8 +1,9 @@
-package com.jdkcc.ts.service.wechat.weixinjs;
+package com.jdkcc.ts.wechat.weixinjs;
 
 
-import com.jdkcc.ts.service.wechat.weixin4j.WeixinConfig;
+import com.jdkcc.ts.wechat.weixin4j.WeixinConfig;
 
+import javax.servlet.ServletContext;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -23,6 +24,15 @@ public class Sign {
 			System.out.println(entry.getKey() + ", " + entry.getValue());
 		}
 	}*/
+
+	/**
+	 * 在application中保存微信需要的accesstoken以提供签名
+	 * @param application
+	 * @param url
+	 */
+	public static Map<String, String> sign(ServletContext application, String url) {
+		return sign(WeixinJs.getJsApiTicket(application), url);
+	}
 
 	public static Map<String, String> sign(String url) {
 		String access_token = WeixinJs.getAccess_token();
