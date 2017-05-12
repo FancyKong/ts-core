@@ -83,7 +83,7 @@ public class ApiController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.error("openid: {} -> {}", oAuthInfo.getOpenid(), e.getMessage());
+			log.error("openid: {} -> {}", oAuthInfo.getOpenid(), Throwables.getStackTraceAsString(e));
 		}
 	}*/
 	

@@ -38,7 +38,7 @@ public class ABaseController {
 	}
 
 	protected MResponse buildResponse(Integer code, Boolean success, String message, Object data) {
-		return new MResponse(code, success, message, data);
+		return new MResponse<>(code, success, message, data);
 	}
 
 	protected Map<String, String> getErrors(BindingResult result) {

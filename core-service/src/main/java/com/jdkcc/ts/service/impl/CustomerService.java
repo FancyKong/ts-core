@@ -101,9 +101,7 @@ public class CustomerService extends ABaseService<Customer, Long> {
 
     @Transactional
     public void save(CustomerReq customerReq) {
-        Customer customer = this.findById(customerReq.getId());
-        if (customer == null) return;
-
+        Customer customer = new Customer();
         ObjectConvertUtil.objectCopy(customer, customerReq);
         customer.setCreatedTime(new Date());
         customer.setModifiedTime(new Date());

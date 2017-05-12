@@ -1,5 +1,6 @@
 package com.jdkcc.ts.web.controller;
 
+import com.google.common.base.Throwables;
 import com.jdkcc.ts.dal.entity.Article;
 import com.jdkcc.ts.service.dto.MResponse;
 import com.jdkcc.ts.service.dto.request.ArticleReq;
@@ -8,6 +9,7 @@ import com.jdkcc.ts.service.dto.response.ArticleDTO;
 import com.jdkcc.ts.service.impl.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -45,13 +47,14 @@ public class ArticleController extends ABaseController {
             ArticleDTO article = articleService.findOne(articleId);
             return buildResponse(Boolean.TRUE, "查看文章详情", article);
         } catch (Exception e) {
-            log.error("获取列表失败:", e.getMessage());
+            log.error("获取列表失败:", Throwables.getStackTraceAsString(e));
             return buildResponse(Boolean.FALSE, BUSY_MSG, null);
         }
     }
 
-    @GetMapping
-    public ModelAndView index(){
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/list")
+    public ModelAndView list(){
         ModelAndView mv = new ModelAndView("admin/article/list");
         return mv;
     }
@@ -59,6 +62,7 @@ public class ArticleController extends ABaseController {
     /**
      * 返回新增页面
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/add")
     public ModelAndView addForm(){
         ModelAndView mv = new ModelAndView("admin/article/add");
@@ -68,6 +72,7 @@ public class ArticleController extends ABaseController {
     /**
      * 返回修改信息页面
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{articleId}/update")
     public ModelAndView updateForm(@PathVariable("articleId") Long articleId){
         ModelAndView mv = new ModelAndView("admin/article/edit");
@@ -82,6 +87,7 @@ public class ArticleController extends ABaseController {
      * @return JSON
      * @date 2016年8月30日 下午5:30:18
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/page")
     @ResponseBody
     public MResponse toPage(BasicSearchReq basicSearchReq){
@@ -89,7 +95,7 @@ public class ArticleController extends ABaseController {
             Page<ArticleDTO> page = articleService.findAll(basicSearchReq);
             return buildResponse(Boolean.TRUE, basicSearchReq.getDraw(), page);
         } catch (Exception e) {
-            log.error("获取列表失败: {}", e.getMessage());
+            log.error("获取列表失败: {}", Throwables.getStackTraceAsString(e));
             return buildResponse(Boolean.FALSE, BUSY_MSG, null);
         }
     }
@@ -99,6 +105,7 @@ public class ArticleController extends ABaseController {
      * @param articleId ID
      * @return JSON
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{articleId}/delete")
     @ResponseBody
     public MResponse delete(@PathVariable("articleId") Long articleId){
@@ -106,7 +113,7 @@ public class ArticleController extends ABaseController {
             articleService.delete(articleId);
             return buildResponse(Boolean.TRUE, "删除成功", null);
         } catch (Exception e) {
-            log.error("删除失败:{}", e.getMessage());
+            log.error("删除失败:{}", Throwables.getStackTraceAsString(e));
             return buildResponse(Boolean.FALSE, "删除失败", null);
         }
     }
@@ -116,6 +123,7 @@ public class ArticleController extends ABaseController {
      * @param articleReq 更新信息
      * @return ModelAndView
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/update")
     public ModelAndView update(@Validated ArticleReq articleReq, BindingResult bindingResult){
 
@@ -127,7 +135,6 @@ public class ArticleController extends ABaseController {
             errorMap.put("msg", "数据错误");
             return mv;
         }
-
         if (bindingResult.hasErrors()) {
             errorMap.putAll(getErrors(bindingResult));
             mv.addObject("article", articleReq);
@@ -138,10 +145,9 @@ public class ArticleController extends ABaseController {
                 errorMap.put("msg", "修改成功");
             } catch (Exception e) {
                 errorMap.put("msg", "系统繁忙");
-                log.error("修改错误:{}", e.getMessage());
+                log.error("修改错误:{}", Throwables.getStackTraceAsString(e));
             }
         }
-
         return mv;
     }
 
@@ -150,6 +156,7 @@ public class ArticleController extends ABaseController {
      * @param articleReq 保存的信息
      * @return ModelAndView
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/save")
     public ModelAndView save(@Validated ArticleReq articleReq, BindingResult bindingResult){
 
@@ -164,11 +171,9 @@ public class ArticleController extends ABaseController {
             try {
                 articleService.save(articleReq);
                 errorMap.put("msg", "添加成功");
-
             } catch (Exception e) {
-                
                 errorMap.put("msg", "系统繁忙");
-                log.error("添加失败:{}", e.getMessage());
+                log.error("添加失败:{}", Throwables.getStackTraceAsString(e));
             }
         }
         return mv;

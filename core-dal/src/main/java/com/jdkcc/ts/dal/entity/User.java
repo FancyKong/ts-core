@@ -22,11 +22,6 @@ public class User implements java.io.Serializable {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
-    /**
-     * 分店ID
-     */
-    @Column(name = "store_id", nullable = false)
-    private Long storeId;
 
     @Column(name = "username", nullable = false, length = 16)
     private String username;

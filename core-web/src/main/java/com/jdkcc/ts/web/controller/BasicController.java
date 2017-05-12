@@ -1,51 +1,37 @@
 package com.jdkcc.ts.web.controller;
 
+import com.google.common.base.Throwables;
 import com.jdkcc.ts.common.util.ValidateCode;
-import com.jdkcc.ts.service.dto.request.user.UserLoginReq;
 import com.jdkcc.ts.service.impl.UserService;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class BasicController extends ABaseController {
 
 	private final UserService userService;
-    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public BasicController(UserService userService, AuthenticationManager authenticationManager) {
+    public BasicController(UserService userService) {
         this.userService = userService;
-        this.authenticationManager = authenticationManager;
     }
 
     /**
@@ -72,56 +58,8 @@ public class BasicController extends ABaseController {
 		return "admin/login";
 	}
 	
-	/**
-	 * 执行登陆
-	 */
-	@PostMapping(value = "/login")
-	public ModelAndView login(@Validated UserLoginReq loginReq, BindingResult bindingResult, HttpServletRequest request){
-        log.info("【執行登陸】{}", loginReq);
-
-        ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("admin/login");
-        Map<String, Object> errorMap = new HashMap<>();
-        modelAndView.addObject("errorMap", errorMap);
-
-		String code = (String) request.getSession().getAttribute("validateCode");
-		String submitCode = (String) request.getAttribute("validateCode");
-		//判断验证码
-		if (StringUtils.isBlank(submitCode) || !StringUtils.equalsIgnoreCase(code,submitCode.toLowerCase())) {
-			log.debug("验证码不正确");
-            errorMap.put("validateCodeError", "验证码不正确");
-            //添加上表单输入数据返回给页面
-			modelAndView.addObject("loginReq", loginReq);
-			return modelAndView;
-		}
-
-		//表单验证是否通过
-		if (bindingResult.hasErrors()) {
-			errorMap.putAll(getErrors(bindingResult));
-            //添加上表单输入数据返回给页面
-			modelAndView.addObject("loginReq", loginReq);
-            return modelAndView;
-		}
-
-        UsernamePasswordAuthenticationToken authRequest =
-                new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword());
-        try {
-            Authentication authentication = authenticationManager.authenticate(authRequest);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            HttpSession session = request.getSession();
-            session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext()); // 这个非常重要，否则验证后将无法登陆  
-
-            modelAndView.addObject("msg","登录用户："+authentication.getName());
-        } catch (AuthenticationException ex) {
-            modelAndView.addObject("msg","用户名或密码错误");
-        }
-
-		return modelAndView;
-	}
-
 	@GetMapping("/403")
 	public String unauthorizedRole(){
-		log.debug("------没有权限-------");
 		return "error/403";
 	}
 	
@@ -167,7 +105,7 @@ public class BasicController extends ABaseController {
 						+ request.getContextPath() + "/";
 				url = basePath + "imageDownload?filename=" + newFIleName;
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.error("【上传出错】 {}", Throwables.getStackTraceAsString(e));
 			}
 
 		} // end if

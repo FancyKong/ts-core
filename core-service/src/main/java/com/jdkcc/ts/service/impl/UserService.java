@@ -2,7 +2,6 @@ package com.jdkcc.ts.service.impl;
 
 import com.jdkcc.ts.common.enums.ActiveEnum;
 import com.jdkcc.ts.common.util.ObjectConvertUtil;
-import com.jdkcc.ts.common.util.SHA;
 import com.jdkcc.ts.dal.entity.User;
 import com.jdkcc.ts.dal.repository.IBaseDAO;
 import com.jdkcc.ts.dal.repository.UserDAO;
@@ -79,7 +78,6 @@ public class UserService extends ABaseService<User, Long> {
         ObjectConvertUtil.objectCopy(user, userSaveReq);
         user.setCreatedTime(new Date());
         user.setModifiedTime(new Date());
-        user.setPassword(SHA.sha1(user.getPassword()));
         return this.save(user);
     }
 

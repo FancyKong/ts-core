@@ -60,11 +60,5 @@ public class Customer implements java.io.Serializable {
      */
     @Column(name = "wx_user_id")
     private Long wxUserId;
-    /**
-     * 分店ID
-     */
-    @Column(name = "store_id")
-    private Long storeId;
-
 
 }
