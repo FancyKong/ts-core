@@ -1,12 +1,12 @@
 package com.jdkcc.ts.web.controller;
 
 import com.google.common.base.Throwables;
-import com.jdkcc.ts.dal.entity.Warm;
+import com.jdkcc.ts.dal.entity.Garbage;
 import com.jdkcc.ts.service.dto.MResponse;
-import com.jdkcc.ts.service.dto.request.WarmReq;
 import com.jdkcc.ts.service.dto.request.BasicSearchReq;
-import com.jdkcc.ts.service.dto.response.WarmDTO;
-import com.jdkcc.ts.service.impl.WarmService;
+import com.jdkcc.ts.service.dto.request.GarbageReq;
+import com.jdkcc.ts.service.dto.response.GarbageDTO;
+import com.jdkcc.ts.service.impl.GarbageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,31 +21,31 @@ import java.util.Map;
 
 
 /**
- * 温馨墙控制器
+ * 回收站控制器
  * Created by Cherish on 2017/1/6.
  */
 @Controller
-@RequestMapping("warm")
-public class WarmController extends ABaseController {
+@RequestMapping("garbage")
+public class GarbageController extends ABaseController {
 
-    private final WarmService warmService;
+    private final GarbageService garbageService;
 
     @Autowired
-    public WarmController(WarmService warmService) {
-        this.warmService = warmService;
+    public GarbageController(GarbageService garbageService) {
+        this.garbageService = garbageService;
     }
 
     /**
-     * 对外开放的查看温馨话语详情
-     * @param warmId 温馨话语ID
+     * 对外开放的查看
+     * @param garbageId 温馨话语ID
      * @return JSON
      */
-    @GetMapping("/{warmId}")
+    @GetMapping("/{garbageId}")
     @ResponseBody
-    public MResponse findOne(@PathVariable Long warmId){
+    public MResponse findOne(@PathVariable Long garbageId){
         try {
-            WarmDTO warmDTO = warmService.findOne(warmId);
-            return buildResponse(Boolean.TRUE, "查看温馨话语详情", warmDTO);
+            GarbageDTO garbageDTO = garbageService.findOne(garbageId);
+            return buildResponse(Boolean.TRUE, "查看详情", garbageDTO);
         } catch (Exception e) {
             log.error("获取列表失败:", Throwables.getStackTraceAsString(e));
             return buildResponse(Boolean.FALSE, BUSY_MSG, null);
@@ -55,7 +55,7 @@ public class WarmController extends ABaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/list")
     public ModelAndView list(){
-        ModelAndView mv = new ModelAndView("admin/warm/list");
+        ModelAndView mv = new ModelAndView("admin/garbage/list");
         return mv;
     }
 
@@ -65,7 +65,7 @@ public class WarmController extends ABaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/add")
     public ModelAndView addForm(){
-        ModelAndView mv = new ModelAndView("admin/warm/add");
+        ModelAndView mv = new ModelAndView("admin/garbage/add");
         return mv;
     }
 
@@ -73,11 +73,11 @@ public class WarmController extends ABaseController {
      * 返回修改信息页面
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/{warmId}/update")
-    public ModelAndView updateForm(@PathVariable("warmId") Long warmId){
-        ModelAndView mv = new ModelAndView("admin/warm/edit");
-        Warm warm = warmService.findById(warmId);
-        mv.addObject(warm);
+    @GetMapping("/{garbageId}/update")
+    public ModelAndView updateForm(@PathVariable("garbageId") Long garbageId){
+        ModelAndView mv = new ModelAndView("admin/garbage/edit");
+        Garbage garbage = garbageService.findById(garbageId);
+        mv.addObject(garbage);
         return mv;
     }
 
@@ -92,7 +92,7 @@ public class WarmController extends ABaseController {
     @ResponseBody
     public MResponse toPage(BasicSearchReq basicSearchReq){
         try {
-            Page<WarmDTO> page = warmService.findAll(basicSearchReq);
+            Page<GarbageDTO> page = garbageService.findAll(basicSearchReq);
             return buildResponse(Boolean.TRUE, basicSearchReq.getDraw(), page);
         } catch (Exception e) {
             log.error("获取列表失败: {}", Throwables.getStackTraceAsString(e));
@@ -102,15 +102,15 @@ public class WarmController extends ABaseController {
 
     /**
      * 删除
-     * @param warmId ID
+     * @param garbageId ID
      * @return JSON
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/{warmId}/delete")
+    @DeleteMapping("/{garbageId}/delete")
     @ResponseBody
-    public MResponse delete(@PathVariable("warmId") Long warmId){
+    public MResponse delete(@PathVariable("garbageId") Long garbageId){
         try {
-            warmService.delete(warmId);
+            garbageService.delete(garbageId);
             return buildResponse(Boolean.TRUE, "删除成功", null);
         } catch (Exception e) {
             log.error("删除失败:{}", Throwables.getStackTraceAsString(e));
@@ -120,28 +120,28 @@ public class WarmController extends ABaseController {
 
     /**
      * 更改信息
-     * @param warmReq 更新信息
+     * @param garbageReq 更新信息
      * @return ModelAndView
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/update")
-    public ModelAndView update(@Validated WarmReq warmReq, BindingResult bindingResult){
-        log.info("【更新信息】{}", warmReq);
-        ModelAndView mv = new ModelAndView("admin/warm/edit");
+    public ModelAndView update(@Validated GarbageReq garbageReq, BindingResult bindingResult){
+        log.info("【更新信息】{}", garbageReq);
+        ModelAndView mv = new ModelAndView("admin/garbage/edit");
         Map<String, Object> errorMap = new HashMap<>();
         mv.addObject("errorMap", errorMap);
 
-        if(warmReq == null || warmReq.getId() == null){
+        if(garbageReq == null || garbageReq.getId() == null){
             errorMap.put("msg", "数据错误");
             return mv;
         }
         if (bindingResult.hasErrors()) {
             errorMap.putAll(getErrors(bindingResult));
-            mv.addObject("warm", warmReq);
+            mv.addObject("garbage", garbageReq);
         }else {
             try {
-                warmService.update(warmReq);
-                mv.addObject("warm", warmService.findById(warmReq.getId()));
+                garbageService.update(garbageReq);
+                mv.addObject("garbage", garbageService.findById(garbageReq.getId()));
                 errorMap.put("msg", "修改成功");
             } catch (Exception e) {
                 errorMap.put("msg", "系统繁忙");

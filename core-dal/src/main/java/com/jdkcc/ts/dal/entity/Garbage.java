@@ -10,7 +10,7 @@ import java.util.Date;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
- * 温馨话语
+ * 回收站
  * @author Cherish
  * @version 1.0
  * @date 2017/5/13 16:42
