@@ -44,8 +44,6 @@
 			    {
 					"data" : 'nickname'
 				}, {
-					"data" : 'telephone'
-				}, {
 					"data" : 'city'
                 }, {
                     "data" : 'sex'

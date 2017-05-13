@@ -25,7 +25,7 @@ public class WxUserDTO implements java.io.Serializable {
     /**
      * 性别
      */
-	private Short sex;
+	private Integer sex;
     /**
      * 国家
      */
