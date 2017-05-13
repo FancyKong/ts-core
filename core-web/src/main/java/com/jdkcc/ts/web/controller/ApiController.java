@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -41,7 +42,7 @@ public class ApiController {
 	 * @param response
 	 * @date 2016年8月16日 下午1:33:28
 	 */
-	@RequestMapping(value = "/toAuth")
+	@GetMapping(value = "/toAuth")
 	public void toAuth(HttpServletResponse response) {
 		response.setContentType("text/html;charset=utf-8");
 		try {
@@ -107,7 +108,7 @@ public class ApiController {
 	 * @return Map<String,String>
 	 * @date 2016年8月17日 上午10:31:15
 	 */
-	@RequestMapping(value = "/getJsSdkInitData")
+	@GetMapping(value = "/getJsSdkInitData")
 	@ResponseBody
 	public Map getJssdkInitData(String url,HttpServletRequest request) {
 		Map<String, String> data =  null;

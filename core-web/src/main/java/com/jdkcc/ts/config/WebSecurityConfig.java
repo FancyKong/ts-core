@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/","/login","/logout","/validateCode","/**/favicon.ico",
                         "/druid/**","/static/**", "/css/**", "/js/**", "/images/**", "/tools/**",
                         "/api/**","/imageDownload*").permitAll()//允许所有
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
             .formLogin()
                 .loginPage("/login")

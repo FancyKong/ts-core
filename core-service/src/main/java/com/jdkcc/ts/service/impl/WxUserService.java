@@ -6,6 +6,7 @@ import com.jdkcc.ts.dal.repository.IBaseDAO;
 import com.jdkcc.ts.dal.repository.WxUserDAO;
 import com.jdkcc.ts.service.dto.request.BasicSearchReq;
 import com.jdkcc.ts.service.dto.request.wxuser.WxUserSearchReq;
+import com.jdkcc.ts.service.dto.request.wxuser.WxUserUpdateReq;
 import com.jdkcc.ts.service.dto.response.WxUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,6 +48,12 @@ public class WxUserService extends ABaseService<WxUser, Long> {
         WxUserDTO wxUserDTO = new WxUserDTO();
         ObjectConvertUtil.objectCopy(wxUserDTO, source);
         return wxUserDTO;
+    }
+
+    public void update(WxUserUpdateReq wxUserUpdateReq) {
+        WxUser wxUser = wxUserDAO.findOne(wxUserUpdateReq.getId());
+        ObjectConvertUtil.objectCopy(wxUser, wxUserUpdateReq);
+        wxUserDAO.save(wxUser);
     }
 
 

@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +46,8 @@ public class BasicController extends ABaseController {
     /**
      * 管理页面
      */
-    @GetMapping(value = "admin")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "admin")
     public String admin(){
         return "admin/datapanel";
     }
