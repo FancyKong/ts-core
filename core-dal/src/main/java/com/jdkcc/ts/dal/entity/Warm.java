@@ -19,9 +19,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "t_warm_sweet")
-public class WarmSweet implements java.io.Serializable {
-
+@Table(name = "t_warm")
+public class Warm implements java.io.Serializable {
 
     private static final long serialVersionUID = 4174107925999053672L;
     @Id

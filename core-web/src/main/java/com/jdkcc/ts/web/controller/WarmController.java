@@ -1,12 +1,12 @@
 package com.jdkcc.ts.web.controller;
 
 import com.google.common.base.Throwables;
-import com.jdkcc.ts.dal.entity.WarmSweet;
+import com.jdkcc.ts.dal.entity.Warm;
 import com.jdkcc.ts.service.dto.MResponse;
-import com.jdkcc.ts.service.dto.request.WarmSweetReq;
+import com.jdkcc.ts.service.dto.request.WarmReq;
 import com.jdkcc.ts.service.dto.request.BasicSearchReq;
-import com.jdkcc.ts.service.dto.response.WarmSweetDTO;
-import com.jdkcc.ts.service.impl.WarmSweetService;
+import com.jdkcc.ts.service.dto.response.WarmDTO;
+import com.jdkcc.ts.service.impl.WarmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,14 +25,14 @@ import java.util.Map;
  * Created by Cherish on 2017/1/6.
  */
 @Controller
-@RequestMapping("warmSweet")
-public class WarmSweetController extends ABaseController {
+@RequestMapping("warm")
+public class WarmController extends ABaseController {
 
-    private final WarmSweetService warmSweetService;
+    private final WarmService warmService;
 
     @Autowired
-    public WarmSweetController(WarmSweetService warmSweetService) {
-        this.warmSweetService = warmSweetService;
+    public WarmController(WarmService warmService) {
+        this.warmService = warmService;
     }
 
     /**
@@ -40,12 +40,12 @@ public class WarmSweetController extends ABaseController {
      * @param warmSweetId 温馨话语ID
      * @return JSON
      */
-    @GetMapping("/{warmSweetId}")
+    @GetMapping("/{warmId}")
     @ResponseBody
     public MResponse findOne(@PathVariable Long warmSweetId){
         try {
-            WarmSweetDTO warmSweet = warmSweetService.findOne(warmSweetId);
-            return buildResponse(Boolean.TRUE, "查看温馨话语详情", warmSweet);
+            WarmDTO warmDTO = warmService.findOne(warmSweetId);
+            return buildResponse(Boolean.TRUE, "查看温馨话语详情", warmDTO);
         } catch (Exception e) {
             log.error("获取列表失败:", Throwables.getStackTraceAsString(e));
             return buildResponse(Boolean.FALSE, BUSY_MSG, null);
@@ -73,11 +73,11 @@ public class WarmSweetController extends ABaseController {
      * 返回修改信息页面
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/{warmSweetId}/update")
-    public ModelAndView updateForm(@PathVariable("warmSweetId") Long warmSweetId){
+    @GetMapping("/{warmId}/update")
+    public ModelAndView updateForm(@PathVariable("warmId") Long warmId){
         ModelAndView mv = new ModelAndView("admin/warmSweet/edit");
-        WarmSweet warmSweet = warmSweetService.findById(warmSweetId);
-        mv.addObject(warmSweet);
+        Warm warm = warmService.findById(warmId);
+        mv.addObject(warm);
         return mv;
     }
 
@@ -92,7 +92,7 @@ public class WarmSweetController extends ABaseController {
     @ResponseBody
     public MResponse toPage(BasicSearchReq basicSearchReq){
         try {
-            Page<WarmSweetDTO> page = warmSweetService.findAll(basicSearchReq);
+            Page<WarmDTO> page = warmService.findAll(basicSearchReq);
             return buildResponse(Boolean.TRUE, basicSearchReq.getDraw(), page);
         } catch (Exception e) {
             log.error("获取列表失败: {}", Throwables.getStackTraceAsString(e));
@@ -102,15 +102,15 @@ public class WarmSweetController extends ABaseController {
 
     /**
      * 删除
-     * @param warmSweetId ID
+     * @param warmId ID
      * @return JSON
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/{warmSweetId}/delete")
+    @DeleteMapping("/{warmId}/delete")
     @ResponseBody
-    public MResponse delete(@PathVariable("warmSweetId") Long warmSweetId){
+    public MResponse delete(@PathVariable("warmId") Long warmId){
         try {
-            warmSweetService.delete(warmSweetId);
+            warmService.delete(warmId);
             return buildResponse(Boolean.TRUE, "删除成功", null);
         } catch (Exception e) {
             log.error("删除失败:{}", Throwables.getStackTraceAsString(e));
@@ -120,28 +120,28 @@ public class WarmSweetController extends ABaseController {
 
     /**
      * 更改信息
-     * @param warmSweetReq 更新信息
+     * @param warmReq 更新信息
      * @return ModelAndView
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/update")
-    public ModelAndView update(@Validated WarmSweetReq warmSweetReq, BindingResult bindingResult){
-        log.info("【更新信息】{}", warmSweetReq);
+    public ModelAndView update(@Validated WarmReq warmReq, BindingResult bindingResult){
+        log.info("【更新信息】{}", warmReq);
         ModelAndView mv = new ModelAndView("admin/warmSweet/edit");
         Map<String, Object> errorMap = new HashMap<>();
         mv.addObject("errorMap", errorMap);
 
-        if(warmSweetReq == null || warmSweetReq.getId() == null){
+        if(warmReq == null || warmReq.getId() == null){
             errorMap.put("msg", "数据错误");
             return mv;
         }
         if (bindingResult.hasErrors()) {
             errorMap.putAll(getErrors(bindingResult));
-            mv.addObject("warmSweet", warmSweetReq);
+            mv.addObject("warm", warmReq);
         }else {
             try {
-                warmSweetService.update(warmSweetReq);
-                mv.addObject("warmSweet", warmSweetService.findById(warmSweetReq.getId()));
+                warmService.update(warmReq);
+                mv.addObject("warm", warmService.findById(warmReq.getId()));
                 errorMap.put("msg", "修改成功");
             } catch (Exception e) {
                 errorMap.put("msg", "系统繁忙");

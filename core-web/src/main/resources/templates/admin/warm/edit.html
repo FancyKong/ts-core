@@ -16,7 +16,7 @@
     <div class="page-heading">
         <h3>更改温馨话语</h3>
         <ul class="breadcrumb">
-            <li><a href="/warmSweet/list">温馨墙</a></li>
+            <li><a href="/warm/list">温馨墙</a></li>
             <li class="active"> 更改温馨话语 </li>
         </ul>
     </div>
@@ -30,17 +30,17 @@
                 <section class="panel">
                     <div class="panel-body">
                         <div class=" form">
-                            <form class="cmxform form-horizontal adminex-form" id="warmSweetForm"
-                                  method="post" th:action="@{/warmSweet/update}">
+                            <form class="cmxform form-horizontal adminex-form" id="warmForm"
+                                  method="post" th:action="@{/warm/update}">
 
-                                <input type="hidden" name="id" th:value="${warmSweet} ? ${warmSweet.id}"/>
+                                <input type="hidden" name="id" th:value="${warm} ? ${warm.id}"/>
 
                                 <div class="form-group">
                                     <label for="title" class="control-label col-md-2 col-sm-2">标题:</label>
                                     <div class="col-md-4 col-sm-10">
                                         <input type="text" id="title" name="title" class="form-control"
                                                placeholder="大标题" minlength="1" maxlength="64" required
-                                               th:value="${warmSweet} ? ${warmSweet.title}" />
+                                               th:value="${warm} ? ${warm.title}" />
                                         <p class="help-block">
                                             <label class="error-label"
                                                    th:text="${errorMap} ? ${errorMap['title']}"></label>
@@ -51,7 +51,7 @@
                                     <div class="col-md-2 col-sm-10">
                                         <input type="number" id="readSum" name="readSum" class="form-control"
                                                placeholder="你想有阅读量吗"
-                                               th:value="${warmSweet} ? ${warmSweet.readSum}">
+                                               th:value="${warm} ? ${warm.readSum}">
                                         </input>
                                         <p class="help-block">
                                             <label class="error-label"
@@ -62,11 +62,11 @@
 
                                 <div class="form-group">
                                     <textarea id="content" name="content" hidden
-                                              th:text="${warmSweet} ? ${warmSweet.content}" ></textarea>
+                                              th:text="${warm} ? ${warm.content}" ></textarea>
 
                                     <div id="editor-container" class="container">
                                         <div id="editor-trigger" style="height: 400px;"
-                                             th:utext="${warmSweet} ? ${warmSweet.content}"><p>请输入内容......</p></div>
+                                             th:utext="${warm} ? ${warm.content}"><p>请输入内容......</p></div>
                                         <!-- <textarea id="editor-trigger" style="display:none;">
                                             <p>请输入内容...</p>
                                         </textarea> -->
@@ -110,7 +110,7 @@
             $('.custom-nav .nav-active').removeClass('nav-active');
             $('.custom-nav .active').removeClass('active');
             $("#infoMenu").addClass("nav-active");
-            $("#warmSweetLi").addClass("active");
+            $("#warmLi").addClass("active");
         });
     </script>
     <p class="msg-block" th:if="${errorMap}">

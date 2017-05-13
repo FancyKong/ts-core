@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WarmSweetReq implements java.io.Serializable {
+public class WarmReq implements java.io.Serializable {
 
     private static final long serialVersionUID = -3096551813678230487L;
 

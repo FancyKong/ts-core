@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WarmSweetDTO implements java.io.Serializable {
+public class WarmDTO implements java.io.Serializable {
 
     private static final long serialVersionUID = 3829076377334462405L;
 
