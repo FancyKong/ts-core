@@ -20,7 +20,9 @@ public class WxUserUpdateReq implements java.io.Serializable {
      * 性别
      */
 	private Short sex;
-
+    /**
+     * 国家
+     */
     private String country;
     /**
      * 省

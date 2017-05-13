@@ -9,6 +9,7 @@ import com.jdkcc.ts.service.dto.request.wxuser.WxUserUpdateReq;
 import com.jdkcc.ts.service.dto.response.WxUserDTO;
 import com.jdkcc.ts.service.impl.WxUserService;
 import com.jdkcc.ts.web.util.SessionUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import springfox.documentation.annotations.ApiIgnore;
  * 微信会员
  * Created by Cherish on 2017/1/6.
  */
+@Api("WxUserController相关api")
 @Controller
 @RequestMapping("wx_user")
 public class WxUserController extends ABaseController {

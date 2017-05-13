@@ -37,7 +37,9 @@ public class WxUser implements java.io.Serializable {
      */
     @Column(name = "sex")
 	private Short sex;
-
+    /**
+     * 国家
+     */
     @Column(name = "country", length = 16)
     private String country;
     /**
