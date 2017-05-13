@@ -10,10 +10,10 @@
 			//ajax配置为function,手动调用异步查询
 			"ajax" : function(data, callback, settings) {
 				//封装请求参数
-				var param = garbageManage.getQueryCondition(data);
+				var param = gradeManage.getQueryCondition(data);
 				$.ajax({
 					type : "GET",
-					url : "/garbage/page",//TODO
+					url : "/grade/page",//TODO
 					cache : false, //禁用缓存
 					data : param, //传入已封装的参数
 					dataType : "json",
@@ -42,9 +42,9 @@
 			"columns" : [
 			    CONSTANT.DATA_TABLES.COLUMN.NO,
 			    {
-					"data" : 'title'
+					"data" : 'content'
 				}, {
-					"data" : 'readSum'
+					"data" : 'score'
                 }, {
                     "data" : 'wxUserId'
                 }, {
@@ -62,7 +62,7 @@
 	});
 
 	//表格的管理机制
-	var garbageManage = {
+	var gradeManage = {
 		currentItem : null,//储存当前被选中的行
 		fuzzySearch : false,//是否模糊查询
 		getQueryCondition : function(data) {
@@ -80,8 +80,8 @@
 				param.orderDir = data.order[0].dir;
 			}
 			//组装查询参数
-			param.fuzzySearch = garbageManage.fuzzySearch;
-			if (garbageManage.fuzzySearch) {//模糊查询
+			param.fuzzySearch = gradeManage.fuzzySearch;
+			if (gradeManage.fuzzySearch) {//模糊查询
 				param.fuzzy = $("#fuzzy-search").val();
 			} else {//非模糊查询
 			}
@@ -98,7 +98,7 @@
 	 //新增行
     $('#otable_new').on('click', function (e) {
         e.preventDefault();
-        var url = "/garbage/add";
+        var url = "/grade/add";
         window.open(url, "_self");
     });
 
@@ -111,7 +111,7 @@
 
         myConfirm("你确定要删除吗?",function(){
             //向服务器提交删除请求
-            var url = "/garbage/"+id+"/delete";
+            var url = "/grade/"+id+"/delete";
             var result = delAjax(url);
 
             if(result.success){
@@ -131,6 +131,6 @@
         /* Get the row as a parent of the link that was clicked on */
         var nRow = $(this).parents('tr')[0];
         var id = oTable.row(nRow).id();
-        var url = "/garbage/" + id +"/update";
+        var url = "/grade/" + id +"/update";
         window.open(url, "_self");
     });

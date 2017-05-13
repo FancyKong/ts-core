@@ -60,17 +60,7 @@ public class WarmController extends ABaseController {
     }
 
     /**
-     * 返回新增页面
-     */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/add")
-    public ModelAndView addForm(){
-        ModelAndView mv = new ModelAndView("admin/warm/add");
-        return mv;
-    }
-
-    /**
-     * 返回修改信息页面
+     * 返回修改页面
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{warmId}/update")

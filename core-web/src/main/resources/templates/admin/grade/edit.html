@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      layout:decorate="layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Cherish">
+    <title>更改心理评分</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <link rel="stylesheet" href="/tools/wangEditor-2.1.22/css/wangEditor.min.css">
+    <!-- page heading start-->
+    <div class="page-heading">
+        <h3>更改心理评分</h3>
+        <ul class="breadcrumb">
+            <li><a href="/grade/list">回收站</a></li>
+            <li class="active"> 更改心理评分 </li>
+        </ul>
+    </div>
+    <!-- page heading end-->
+
+    <!--body wrapper start-->
+    <div class="wrapper">
+
+        <div class="row">
+            <div class="col-md-12">
+                <section class="panel">
+                    <div class="panel-body">
+                        <div class=" form">
+                            <form class="cmxform form-horizontal adminex-form" id="gradeForm"
+                                  method="post" th:action="@{/grade/update}">
+
+                                <input type="hidden" name="id" th:value="${grade} ? ${grade.id}"/>
+
+                                <div class="form-group">
+                                    <label for="title" class="control-label col-md-2 col-sm-2">标题:</label>
+                                    <div class="col-md-4 col-sm-10">
+                                        <input type="text" id="title" name="title" class="form-control"
+                                               placeholder="大标题" minlength="1" maxlength="64" required
+                                               th:value="${grade} ? ${grade.title}" />
+                                        <p class="help-block">
+                                            <label class="error-label"
+                                                   th:text="${errorMap} ? ${errorMap['title']}"></label>
+                                        </p>
+                                    </div>
+
+                                    <label for="readSum" class="control-label col-md-2 col-sm-2">阅读量:</label>
+                                    <div class="col-md-2 col-sm-10">
+                                        <input type="number" id="readSum" name="readSum" class="form-control"
+                                               placeholder="你想有阅读量吗"
+                                               th:value="${grade} ? ${grade.readSum}">
+                                        </input>
+                                        <p class="help-block">
+                                            <label class="error-label"
+                                                   th:text="${errorMap} ? ${errorMap['readSum']}"></label>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <textarea id="content" name="content" hidden
+                                              th:text="${grade} ? ${grade.content}" ></textarea>
+
+                                    <div id="editor-container" class="container">
+                                        <div id="editor-trigger" style="height: 400px;"
+                                             th:utext="${grade} ? ${grade.content}"><p>请输入内容......</p></div>
+                                        <!-- <textarea id="editor-trigger" style="display:none;">
+                                            <p>请输入内容...</p>
+                                        </textarea> -->
+                                    </div>
+                                    <p><br></p>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-xs-offset-4 col-xs-8">
+                                        <button class="btn btn-primary" type="submit">
+                                            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
+                                            提交
+                                        </button>
+                                        <button class="btn btn-default" type="reset">
+                                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                                            重置
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+
+        </div><!-- row end -->
+
+    </div><!--body wrapper end-->
+
+
+</div>
+
+<div layout:fragment="javascript">
+    <script type="text/javascript">
+        $(function () {
+            //菜单的active
+            $('.custom-nav .nav-active').removeClass('nav-active');
+            $('.custom-nav .active').removeClass('active');
+            $("#infoMenu").addClass("nav-active");
+            $("#gradeLi").addClass("active");
+        });
+    </script>
+    <p class="msg-block" th:if="${errorMap}">
+        <script th:if="${errorMap['msg']}" th:inline="javascript">
+            /*<![CDATA[*/
+            var msg = [[${errorMap['msg']}]] ;
+            $(function () {
+                myModalWarning(msg);
+            });
+            /*]]>*/
+        </script>
+    </p>
+
+    <script type="text/javascript" src="/tools/wangEditor-2.1.22/js/wangEditor.js"></script>
+    <script type="text/javascript" src="/tools/plupload-2.1.9/js/plupload.full.min.js"></script>
+    <script type="text/javascript" src="/tools/plupload-2.1.9/js/i18n/zh_CN.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/clipboard.js/1.5.16/clipboard.min.js"></script>
+
+    <script type="text/javascript"><!--wangEditor-->
+    var editor = new wangEditor('editor-trigger');
+
+    // 上传图片
+    editor.config.uploadImgUrl = '/imageUpload';
+
+    // 表情显示项
+    editor.config.emotionsShow = 'value';
+    editor.config.emotions = {
+        'default': {
+            title: '默认',
+            data: '/tools/wangEditor-2.1.22/js/emotions.data'
+        }
+    };
+
+    // 插入代码时的默认语言
+    // editor.config.codeDefaultLang = 'html'
+    // 只粘贴纯文本
+    // editor.config.pasteText = true;
+    // 第三方上传
+    // editor.config.customUpload = true;
+    // onchange 事件
+    editor.onchange = function () {
+        $("#content").text(this.$txt.html());
+        console.log(this.$txt.html());
+    };
+
+    // 取消过滤js
+    // editor.config.jsFilter = false;
+    // 取消粘贴过来
+    // editor.config.pasteFilter = false;
+    // 设置 z-index
+    // editor.config.zindex = 20000;
+    // 语言
+    // editor.config.lang = wangEditor.langs['en'];
+    editor.create();
+    </script>
+
+    <!--  剪贴板 clipboard -->
+    <script>
+        var clipboard = new Clipboard('.btn-success');
+        clipboard.on('success', function (e) {
+            console.log(e);
+        });
+        clipboard.on('error', function (e) {
+            console.log(e);
+        });
+    </script>
+</div>
+</body>
+</html>

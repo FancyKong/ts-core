@@ -46,9 +46,9 @@
 				}, {
 					"data" : 'readSum'
                 }, {
-                    "data" : 'createdTime'
+                    "data" : 'wxUserId'
                 }, {
-                    "data" : 'modifiedTime'
+                    "data" : 'createdTime'
 				},
 				CONSTANT.DATA_TABLES.COLUMN.OPERATION
 				],

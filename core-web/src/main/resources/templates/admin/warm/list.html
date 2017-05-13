@@ -14,6 +14,52 @@
 
     <!--body wrapper start-->
     <div class="wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- well -->
+                <div class="well">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon"> <label for="createdTime">发布时间：</label>
+                                </span> <input name="createdTime" id="createdTime" type="text"
+                                               class="form-control" placeholder="温馨语的发布时间">
+                            </div>
+                            <!-- /input-group -->
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon"> <label for="nick">所属用户：</label>
+                                </span> <input name="nickname" id="nick" type="text"
+                                           class="form-control" placeholder="请输入所属用户名称">
+                            </div>
+                            <!-- /input-group -->
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <button id="btn_search" type="button" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    查询
+                                </button>
+                                <button id="btn_reset" type="button" class="btn btn-warning">
+                                    <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                                    重置
+                                </button>
+                                <button id="btn_fresh" type="button" class="btn btn-info">
+                                    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                                    刷新
+                                </button>
+                            </div>
+                            <!-- /input-group -->
+                        </div>
+
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.well -->
+            </div>
+        </div><!-- row end -->
 
         <div class="row">
             <div class="col-sm-12">
@@ -27,8 +73,8 @@
                                 <th>序号</th>
                                 <th>标题</th>
                                 <th>阅读量</th>
+                                <th>所属用户</th>
                                 <th>发布时间</th>
-                                <th>修改时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -37,8 +83,8 @@
                                 <th>序号</th>
                                 <th>标题</th>
                                 <th>阅读量</th>
+                                <th>所属用户</th>
                                 <th>发布时间</th>
-                                <th>修改时间</th>
                                 <th>操作</th>
                             </tr>
                             </tfoot>
@@ -47,8 +93,8 @@
                                 <th>序号</th>
                                 <th>标题</th>
                                 <th>阅读量</th>
+                                <th>所属用户</th>
                                 <th>发布时间</th>
-                                <th>修改时间</th>
                                 <th>操作</th>
                             </tr>
                             </tbody>
