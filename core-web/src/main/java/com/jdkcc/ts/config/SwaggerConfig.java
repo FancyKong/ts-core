@@ -29,35 +29,7 @@ public class SwaggerConfig {
      * 可以定义多个组，比如本类中定义把test和demo区分开了
      * （访问页面就可以看到效果了）
      */
-    /*@Bean
-    public Docket testApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("test")
-                .genericModelSubstitutes(DeferredResult.class)
-//                .genericModelSubstitutes(ResponseEntity.class)
-                .useDefaultResponseMessages(false)
-                .forCodeGeneration(true)
-                .pathMapping("/")// base，最终调用接口后会和paths拼接在一起
-                .select()
-                .paths(or(regex("/test/.*")))//过滤的接口
-                .build()
-                .apiInfo(testApiInfo());
-    }
-
-    @Bean
-    public Docket demoApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("demo")
-                .genericModelSubstitutes(DeferredResult.class)
-//              .genericModelSubstitutes(ResponseEntity.class)
-                .useDefaultResponseMessages(false)
-                .forCodeGeneration(false)
-                .pathMapping("/")
-                .select()
-                .paths(or(regex("/demo/.*")))//过滤的接口
-                .build()
-                .apiInfo(demoApiInfo());
-    }
+    /*
 
     @Bean
     public Docket userApi() {
@@ -81,32 +53,6 @@ public class SwaggerConfig {
                 "",
                 new Contact("FancyKong","www.fancykong.com","823382133@qq.com"),
                 "","");
-    }
-
-    private ApiInfo testApiInfo() {
-        ApiInfo apiInfo = new ApiInfo("大标题",//大标题
-                "小标题   描述  详细描述 description",//小标题
-                "0.1",//版本
-                "terms of service Url",
-                new Contact("Cherish", "www.caihongwen.cn", "785427346@qq.com"),//作者
-                "The Apache License, Version 2.0",//链接显示文字
-                "http://www.apache.org/licenses/LICENSE-2.0.html"//网站链接
-        );
-
-        return apiInfo;
-    }
-
-    private ApiInfo demoApiInfo() {
-        ApiInfo apiInfo = new ApiInfo("大标题就大标题咯DEMO   demo",//大标题
-                "小标题   描述  详细描述 description",//小标题
-                "1.0",//版本
-                "NO terms of service",
-                new Contact("Cherish", "www.caihongwen.cn", "785427346@qq.com"),//作者
-                "The Apache License, Version 2.0",//链接显示文字
-                "http://www.apache.org/licenses/LICENSE-2.0.html"//网站链接
-        );
-
-        return apiInfo;
     }
 
     @Bean

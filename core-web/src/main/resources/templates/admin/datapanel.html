@@ -26,8 +26,8 @@
             <section class="panel">
                 <div class="panel-body">
                     <div class="summary">
-                        <span>本月收入</span>
-                        <h3 class="red-txt">$ 345,600</h3>
+                        <span>总会员数</span>
+                        <h3 class="red-txt">66</h3>
                     </div>
                     <div id="income" class="chart-bar"></div>
                 </div>
@@ -35,8 +35,8 @@
             <section class="panel">
                 <div class="panel-body">
                     <div class="summary">
-                        <span>今日收入</span>
-                        <h3 class="green-txt">$ 45,600</h3>
+                        <span>今日注册</span>
+                        <h3 class="green-txt">3</h3>
                     </div>
                     <div id="expense" class="chart-bar"></div>
                 </div>
@@ -57,19 +57,19 @@
                                 <i class="fa fa-gavel"></i>
                             </div>
                             <div class="state-value">
-                                <div class="value">230</div>
-                                <div class="title">New Order</div>
+                                <div class="value">150</div>
+                                <div class="title">温馨墙</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-xs-12 col-sm-6">
                         <div class="panel red">
                             <div class="symbol">
-                                <i class="fa fa-tags"></i>
+                                <i class="fa fa-book"></i>
                             </div>
                             <div class="state-value">
-                                <div class="value">3490</div>
-                                <div class="title">Copy Sold</div>
+                                <div class="value">90</div>
+                                <div class="title">日记</div>
                             </div>
                         </div>
                     </div>
@@ -78,11 +78,11 @@
                     <div class="col-md-6 col-xs-12 col-sm-6">
                         <div class="panel blue">
                             <div class="symbol">
-                                <i class="fa fa-money"></i>
+                                <i class="fa fa-users"></i>
                             </div>
                             <div class="state-value">
-                                <div class="value">22014</div>
-                                <div class="title">Total Revenue</div>
+                                <div class="value">66</div>
+                                <div class="title">会员</div>
                             </div>
                         </div>
                     </div>
@@ -92,8 +92,8 @@
                                 <i class="fa fa-eye"></i>
                             </div>
                             <div class="state-value">
-                                <div class="value">390</div>
-                                <div class="title">Unique Visitors</div>
+                                <div class="value">30</div>
+                                <div class="title">心理测试</div>
                             </div>
                         </div>
                     </div>
@@ -106,15 +106,16 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-7 col-sm-7 col-xs-7">
-                                <div id="graph-donut" class="revenue-graph"></div>
-
+                                <div id="graph-donut" class="revenue-graph text-center">
+                                    <i class="fa fa-area-chart" style="font-size: 170px;"></i>
+                                </div>
                             </div>
                             <div class="col-md-5 col-sm-5 col-xs-5">
                                 <ul class="bar-legend">
-                                    <li><span class="blue"></span> Open rate</li>
-                                    <li><span class="green"></span> Click rate</li>
-                                    <li><span class="purple"></span> Share rate</li>
-                                    <li><span class="red"></span> Unsubscribed rate</li>
+                                    <li><span class="blue"></span> 会员</li>
+                                    <li><span class="green"></span> 心理测试</li>
+                                    <li><span class="purple"></span> 温馨墙</li>
+                                    <li><span class="red"></span> 日记</li>
                                 </ul>
                             </div>
                         </div>
@@ -129,20 +130,20 @@
                 <div class="panel">
                     <div class="panel-body extra-pad">
                         <h4 class="pros-title">
-                            prospective <span>leads</span>
+                            地域分布
                         </h4>
                         <div class="row">
                             <div class="col-sm-4 col-xs-4">
                                 <div id="p-lead-1"></div>
-                                <p class="p-chart-title">Laptop</p>
+                                <p class="p-chart-title">国家</p>
                             </div>
                             <div class="col-sm-4 col-xs-4">
                                 <div id="p-lead-2"></div>
-                                <p class="p-chart-title">iPhone</p>
+                                <p class="p-chart-title">省份</p>
                             </div>
                             <div class="col-sm-4 col-xs-4">
                                 <div id="p-lead-3"></div>
-                                <p class="p-chart-title">iPad</p>
+                                <p class="p-chart-title">城市</p>
                             </div>
                         </div>
                     </div>
@@ -152,38 +153,37 @@
                 <div class="panel">
                     <div class="panel-body extra-pad">
                         <div class="col-sm-6 col-xs-6">
-                            <div class="v-title">Visits</div>
-                            <div class="v-value">10,090</div>
+                            <div class="v-title">访问量</div>
+                            <div class="v-value">2,090</div>
                             <div id="visit-1"></div>
-                            <div class="v-info">Pages/Visit</div>
+                            <div class="v-info">All Visit</div>
                         </div>
                         <div class="col-sm-6 col-xs-6">
-                            <div class="v-title">Unique Visitors</div>
-                            <div class="v-value">8,173</div>
+                            <div class="v-title">日访问</div>
+                            <div class="v-value">173</div>
                             <div id="visit-2"></div>
-                            <div class="v-info">Avg. Visit Duration</div>
+                            <div class="v-info">Per Day</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
 
-                <div class="panel green-box">
+                <div class="panel">
                     <div class="panel-body extra-pad">
                         <div class="row">
                             <div class="col-sm-6 col-xs-6">
                                 <div class="knob">
-										<span class="chart" data-percent="79"> <span
-                                                class="percent">79% <span class="sm">New Visit</span></span>
-										</span>
+                                    <span class="chart" data-percent="79">
+                                        <span class="percent">79% <span class="sm">New Visit</span></span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-sm-6 col-xs-6">
                                 <div class="knob">
-										<span class="chart" data-percent="56"> <span
-                                                class="percent">56% <span class="sm">Bounce
-													rate</span></span>
-										</span>
+                                    <span class="chart" data-percent="56">
+                                        <span class="percent">56% <span class="sm">Bounce rate</span></span>
+                                    </span>
                                 </div>
                             </div>
                         </div>

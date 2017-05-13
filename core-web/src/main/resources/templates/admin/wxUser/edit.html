@@ -18,7 +18,7 @@
         </h3>
         <ul class="breadcrumb">
             <li>
-                <a href="/wx_user/list">客户管理</a>
+                <a href="/wxUser/list">客户管理</a>
             </li>
             <li class="active"> 更改客户信息 </li>
         </ul>
@@ -34,9 +34,9 @@
                     <div class="panel-body">
                         <div class=" form">
                             <form class="cmxform form-horizontal adminex-form" id="customerForm"
-                                  method="post" th:action="@{/wx_user/update}">
+                                  method="post" th:action="@{/wxUser/update}">
 
-                                <input type="hidden" name="id" th:value="${wxUser} ? ${wx_user.id}"/>
+                                <input type="hidden" name="id" th:value="${wxUser} ? ${wxUser.id}"/>
 
                                 <div class="form-group">
                                     <label for="nickname" class="control-label col-md-2 col-sm-2">呢称:</label>

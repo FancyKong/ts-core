@@ -1,12 +1,12 @@
 package com.jdkcc.ts.web.controller;
 
 import com.google.common.base.Throwables;
-import com.jdkcc.ts.dal.entity.Article;
+import com.jdkcc.ts.dal.entity.WarmSweet;
 import com.jdkcc.ts.service.dto.MResponse;
-import com.jdkcc.ts.service.dto.request.ArticleReq;
+import com.jdkcc.ts.service.dto.request.WarmSweetReq;
 import com.jdkcc.ts.service.dto.request.BasicSearchReq;
-import com.jdkcc.ts.service.dto.response.ArticleDTO;
-import com.jdkcc.ts.service.impl.ArticleService;
+import com.jdkcc.ts.service.dto.response.WarmSweetDTO;
+import com.jdkcc.ts.service.impl.WarmSweetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,31 +21,31 @@ import java.util.Map;
 
 
 /**
- * 文章控制器
+ * 温馨墙控制器
  * Created by Cherish on 2017/1/6.
  */
 @Controller
-@RequestMapping("article")
-public class ArticleController extends ABaseController {
+@RequestMapping("warmSweet")
+public class WarmSweetController extends ABaseController {
 
-    private final ArticleService articleService;
+    private final WarmSweetService warmSweetService;
 
     @Autowired
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
+    public WarmSweetController(WarmSweetService warmSweetService) {
+        this.warmSweetService = warmSweetService;
     }
 
     /**
-     * 对外开放的查看文章详情
-     * @param articleId 文章ID
+     * 对外开放的查看温馨话语详情
+     * @param warmSweetId 温馨话语ID
      * @return JSON
      */
-    @GetMapping("/{articleId}")
+    @GetMapping("/{warmSweetId}")
     @ResponseBody
-    public MResponse findOne(@PathVariable Long articleId){
+    public MResponse findOne(@PathVariable Long warmSweetId){
         try {
-            ArticleDTO article = articleService.findOne(articleId);
-            return buildResponse(Boolean.TRUE, "查看文章详情", article);
+            WarmSweetDTO warmSweet = warmSweetService.findOne(warmSweetId);
+            return buildResponse(Boolean.TRUE, "查看温馨话语详情", warmSweet);
         } catch (Exception e) {
             log.error("获取列表失败:", Throwables.getStackTraceAsString(e));
             return buildResponse(Boolean.FALSE, BUSY_MSG, null);
@@ -55,7 +55,7 @@ public class ArticleController extends ABaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/list")
     public ModelAndView list(){
-        ModelAndView mv = new ModelAndView("admin/article/list");
+        ModelAndView mv = new ModelAndView("admin/warmSweet/list");
         return mv;
     }
 
@@ -65,7 +65,7 @@ public class ArticleController extends ABaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/add")
     public ModelAndView addForm(){
-        ModelAndView mv = new ModelAndView("admin/article/add");
+        ModelAndView mv = new ModelAndView("admin/warmSweet/add");
         return mv;
     }
 
@@ -73,11 +73,11 @@ public class ArticleController extends ABaseController {
      * 返回修改信息页面
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/{articleId}/update")
-    public ModelAndView updateForm(@PathVariable("articleId") Long articleId){
-        ModelAndView mv = new ModelAndView("admin/article/edit");
-        Article article = articleService.findById(articleId);
-        mv.addObject(article);
+    @GetMapping("/{warmSweetId}/update")
+    public ModelAndView updateForm(@PathVariable("warmSweetId") Long warmSweetId){
+        ModelAndView mv = new ModelAndView("admin/warmSweet/edit");
+        WarmSweet warmSweet = warmSweetService.findById(warmSweetId);
+        mv.addObject(warmSweet);
         return mv;
     }
 
@@ -92,7 +92,7 @@ public class ArticleController extends ABaseController {
     @ResponseBody
     public MResponse toPage(BasicSearchReq basicSearchReq){
         try {
-            Page<ArticleDTO> page = articleService.findAll(basicSearchReq);
+            Page<WarmSweetDTO> page = warmSweetService.findAll(basicSearchReq);
             return buildResponse(Boolean.TRUE, basicSearchReq.getDraw(), page);
         } catch (Exception e) {
             log.error("获取列表失败: {}", Throwables.getStackTraceAsString(e));
@@ -102,15 +102,15 @@ public class ArticleController extends ABaseController {
 
     /**
      * 删除
-     * @param articleId ID
+     * @param warmSweetId ID
      * @return JSON
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/{articleId}/delete")
+    @DeleteMapping("/{warmSweetId}/delete")
     @ResponseBody
-    public MResponse delete(@PathVariable("articleId") Long articleId){
+    public MResponse delete(@PathVariable("warmSweetId") Long warmSweetId){
         try {
-            articleService.delete(articleId);
+            warmSweetService.delete(warmSweetId);
             return buildResponse(Boolean.TRUE, "删除成功", null);
         } catch (Exception e) {
             log.error("删除失败:{}", Throwables.getStackTraceAsString(e));
@@ -120,60 +120,32 @@ public class ArticleController extends ABaseController {
 
     /**
      * 更改信息
-     * @param articleReq 更新信息
+     * @param warmSweetReq 更新信息
      * @return ModelAndView
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/update")
-    public ModelAndView update(@Validated ArticleReq articleReq, BindingResult bindingResult){
-
-        ModelAndView mv = new ModelAndView("admin/article/edit");
+    public ModelAndView update(@Validated WarmSweetReq warmSweetReq, BindingResult bindingResult){
+        log.info("【更新信息】{}", warmSweetReq);
+        ModelAndView mv = new ModelAndView("admin/warmSweet/edit");
         Map<String, Object> errorMap = new HashMap<>();
         mv.addObject("errorMap", errorMap);
 
-        if(articleReq == null || articleReq.getId() == null){
+        if(warmSweetReq == null || warmSweetReq.getId() == null){
             errorMap.put("msg", "数据错误");
             return mv;
         }
         if (bindingResult.hasErrors()) {
             errorMap.putAll(getErrors(bindingResult));
-            mv.addObject("article", articleReq);
+            mv.addObject("warmSweet", warmSweetReq);
         }else {
             try {
-                articleService.update(articleReq);
-                mv.addObject("article", articleService.findById(articleReq.getId()));
+                warmSweetService.update(warmSweetReq);
+                mv.addObject("warmSweet", warmSweetService.findById(warmSweetReq.getId()));
                 errorMap.put("msg", "修改成功");
             } catch (Exception e) {
                 errorMap.put("msg", "系统繁忙");
                 log.error("修改错误:{}", Throwables.getStackTraceAsString(e));
-            }
-        }
-        return mv;
-    }
-
-    /**
-     * 保存新
-     * @param articleReq 保存的信息
-     * @return ModelAndView
-     */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/save")
-    public ModelAndView save(@Validated ArticleReq articleReq, BindingResult bindingResult){
-
-        ModelAndView mv = new ModelAndView("admin/article/add");
-        Map<String, Object> errorMap = new HashMap<>();
-        mv.addObject("errorMap", errorMap);
-
-        if (bindingResult.hasErrors()) {
-            errorMap.putAll(getErrors(bindingResult));
-            mv.addObject("article", articleReq);
-        }else {
-            try {
-                articleService.save(articleReq);
-                errorMap.put("msg", "添加成功");
-            } catch (Exception e) {
-                errorMap.put("msg", "系统繁忙");
-                log.error("添加失败:{}", Throwables.getStackTraceAsString(e));
             }
         }
         return mv;

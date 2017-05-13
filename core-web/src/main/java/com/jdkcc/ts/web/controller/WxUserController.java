@@ -25,7 +25,7 @@ import springfox.documentation.annotations.ApiIgnore;
  */
 @Api("WxUserController相关api")
 @Controller
-@RequestMapping("wx_user")
+@RequestMapping("wxUser")
 public class WxUserController extends ABaseController {
 
     private final WxUserService wxUserService;
@@ -38,7 +38,7 @@ public class WxUserController extends ABaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/list")
     public ModelAndView list(){
-        ModelAndView mv = new ModelAndView("admin/wx_user/list");
+        ModelAndView mv = new ModelAndView("admin/wxUser/list");
         return mv;
     }
 
@@ -49,7 +49,7 @@ public class WxUserController extends ABaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}/update")
     public ModelAndView updateForm(@PathVariable("id") Long id){
-        ModelAndView mv = new ModelAndView("admin/wx_user/edit");
+        ModelAndView mv = new ModelAndView("admin/wxUser/edit");
         WxUser wxUser = wxUserService.findById(id);
         mv.addObject("wxUser", wxUser);
         return mv;

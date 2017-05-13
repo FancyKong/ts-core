@@ -10,10 +10,10 @@
 			//ajax配置为function,手动调用异步查询
 			"ajax" : function(data, callback, settings) {
 				//封装请求参数
-				var param = customerManage.getQueryCondition(data);
+				var param = warmSweetManage.getQueryCondition(data);
 				$.ajax({
 					type : "GET",
-					url : "/wxUser/page",//TODO
+					url : "/warmSweet/page",//TODO
 					cache : false, //禁用缓存
 					data : param, //传入已封装的参数
 					dataType : "json",
@@ -42,13 +42,13 @@
 			"columns" : [
 			    CONSTANT.DATA_TABLES.COLUMN.NO,
 			    {
-					"data" : 'openid'
+					"data" : 'title'
 				}, {
-					"data" : 'nickname'
-				}, {
-					"data" : 'city'
+					"data" : 'readSum'
                 }, {
-                    "data" : 'sex'
+                    "data" : 'createdTime'
+                }, {
+                    "data" : 'modifiedTime'
 				},
 				CONSTANT.DATA_TABLES.COLUMN.OPERATION
 				],
@@ -58,43 +58,11 @@
 					"targets" : "_all"
 				}]
 		}));//end $('#otable').DataTable($.extend({
-
-
-        //查询
-        $("#btn_search").click(function(){
-            //reload效果与draw(true)或者draw()类似,
-            //draw(false)则可在获取新数据的同时停留在当前页码,可自行试验
-            //oTable.ajax.reload(); oTable.draw(false);
-            oTable.draw();
-        });
-        //重置
-        $("#btn_reset").click(function(){
-            $("#telephone").val("");
-            $("#nickname").val("");
-            oTable.draw();
-        });
-        //刷新
-        $("#btn_fresh").click(function(){
-            oTable.draw(false);
-        });
-
-        // 回车键事件
-        $("#telephone").keypress(function(e) {
-            if(e.keyCode == 13) {
-                $("#btn_search").click();
-            }
-            return;
-        });
-        $("#nickname").keypress(function(e) {
-            if(e.keyCode == 13) {
-                $("#btn_search").click();
-            }
-            return;
-        });
+		
 	});
 
 	//表格的管理机制
-	var customerManage = {
+	var warmSweetManage = {
 		currentItem : null,//储存当前被选中的行
 		fuzzySearch : false,//是否模糊查询
 		getQueryCondition : function(data) {
@@ -103,7 +71,7 @@
 			if (data.order && data.order.length && data.order[0]) {
 				switch (data.order[0].column) {
 				case 1:
-					param.orderColumn = "telephone";
+					param.orderColumn = "title";
 					break;
 				default:
 					param.orderColumn = "id";
@@ -112,12 +80,10 @@
 				param.orderDir = data.order[0].dir;
 			}
 			//组装查询参数
-			param.fuzzySearch = customerManage.fuzzySearch;
-			if (customerManage.fuzzySearch) {//模糊查询
+			param.fuzzySearch = warmSweetManage.fuzzySearch;
+			if (warmSweetManage.fuzzySearch) {//模糊查询
 				param.fuzzy = $("#fuzzy-search").val();
 			} else {//非模糊查询
-                param.telephone = $("#telephone").val();
-                param.nickname = $("#nickname").val();
 			}
 			//组装分页参数
 			param.startIndex = data.start;
@@ -132,7 +98,7 @@
 	 //新增行
     $('#otable_new').on('click', function (e) {
         e.preventDefault();
-        var url = "/wxUser/add";
+        var url = "/warmSweet/add";
         window.open(url, "_self");
     });
 
@@ -140,12 +106,12 @@
     $('#otable').on('click', 'a.op_delete', function (e) {
         e.preventDefault();
 
-		var nRow = $(this).parents('tr')[0];
-		var id = oTable.row(nRow).id();
+        var nRow = $(this).parents('tr')[0];
+        var id = oTable.row(nRow).id();
 
         myConfirm("你确定要删除吗?",function(){
             //向服务器提交删除请求
-            var url = "/wxUser/"+id+"/delete";
+            var url = "/warmSweet/"+id+"/delete";
             var result = delAjax(url);
 
             if(result.success){
@@ -165,6 +131,6 @@
         /* Get the row as a parent of the link that was clicked on */
         var nRow = $(this).parents('tr')[0];
         var id = oTable.row(nRow).id();
-        var url = "/wxUser/" + id + "/update";
+        var url = "/warmSweet/" + id +"/update";
         window.open(url, "_self");
     });

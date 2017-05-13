@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<h3>JDKCC 欢迎您</h3>
+<h3>Ta说 欢迎您</h3>
 
     <div th:fragment="logout" class="logout"
          sec:authorize="isAuthenticated()">
@@ -18,14 +18,13 @@
         <form th:action="@{/logout}" method="post" style="display:inline"><input type="submit" value="Logout"/></form>
     </div>
 
-    <h1>Thymeleafexamples - Spring Security</h1>
+    <h1>You can say what you want</h1>
     <p>This is a demo of Thymeleaf and Spring-Security integration.</p>
     <h2>Private pages</h2>
     <p>This is a public page, but you can navigate to protected pages to trigger authentication.</p>
     <ul>
         <li>Go to <a href="admin/index.html" th:href="@{/admin/index.html}">administration zone</a> (only admins)</li>
         <li>Go to <a href="user/index.html" th:href="@{/user/index.html}">user zone</a> (only users)</li>
-        <li>Go to <a href="user/index.html" th:href="@{/shared/index.html}">shared zone</a> (both users and admins)</li>
     </ul>
     <h2>Exception handling</h2>
     <ul>
