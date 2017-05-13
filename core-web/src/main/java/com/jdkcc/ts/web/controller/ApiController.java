@@ -63,7 +63,7 @@ public class ApiController {
 	 * @param response
 	 * @date 2016年8月16日 下午1:13:47
 	 */
-	@RequestMapping("/authCallback")
+	@GetMapping("/authCallback")
 	public void authCallback(String code, HttpSession session, HttpServletResponse response) {
         log.info("【授权回调】 code: {}", code);
         OAuthInfo oAuthInfo = WeixinUtil.getOAuthOpenid(code);
@@ -86,7 +86,7 @@ public class ApiController {
                     wxUser.setCity(userInfo.getCity());
                     wxUser.setHeadimgurl(userInfo.getHeadimgurl());
                     wxUser.setNickname(userInfo.getNickname());
-                    wxUser.setSex(userInfo.getSex().shortValue());
+                    wxUser.setSex(userInfo.getSex());
                     wxUser.setSubscribeTime(new Date());
 				}
 				log.info("【授权回调】 openid: {} 保存wxUser到数据库", oAuthInfo.getOpenid());

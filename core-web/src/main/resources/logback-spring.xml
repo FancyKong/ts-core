@@ -24,6 +24,7 @@
             <file>../logs/ts.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <fileNamePattern>../logs/ts.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <MaxHistory>30</MaxHistory>
             </rollingPolicy>
             <encoder>
                 <pattern>%date{HH:mm:ss.SSS} [%thread] [%traceLogId] %-5level %logger{36} [%file : %line] - %msg%n
@@ -31,7 +32,7 @@
             </encoder>
         </appender>
         <!-- project default level -->
-        <logger name="com.jdkcc.ts" level="INFO"/>
+        <logger name="com.jdkcc.ts" level="DEBUG"/>
         <root level="INFO">
             <appender-ref ref="rollingFile"/>
         </root>
